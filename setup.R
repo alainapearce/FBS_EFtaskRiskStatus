@@ -21,7 +21,9 @@
 #
 # source('functions.R')
 # library(haven)
+# library(sjlabelled)
 # library(reshape2)
+# library(psycho)
 
 #### Demographics ####
 
@@ -199,6 +201,15 @@ r01_nback$risk_status_mom <- droplevels(r01_nback$risk_status_mom)
 #re-name blocks
 r01_nback$block <- ifelse(r01_nback$block == 'b0', '0-Back', ifelse(r01_nback$block == 'b1', '1-Back', '2-Back'))
 
+#dprime
+
+dprime_mat <- dprime(n_hit = r01_nback$n_target_hit,
+                        n_miss = r01_nback$n_target_miss,
+                        n_fa = r01_nback$n_fill_fa,
+                        n_cr = r01_nback$n_fill_corr)
+
+r01_nback$dprime <- dprime_mat$dprime
+
 #### SST ####
 
 ## 1) Load Data ####
@@ -279,6 +290,9 @@ r01_sst_EDlong$order <- as.factor(r01_sst_EDlong$order)
 
 r01_sst_PSlong$order <- sapply(r01_sst_PSlong[['sub']], FUN = order_fn, data = r01_sst_long, cond = 'PS')
 r01_sst_PSlong$order <- as.factor(r01_sst_PSlong$order)
+
+r01_sst_long$order <- sapply(r01_sst_long[['sub']], FUN = order_fn, data = r01_sst_long, cond = 'all')
+r01_sst_long$order <- as.factor(r01_sst_long$order)
 
 #merge
 r01_sst_long <- merge(covariates_dat, r01_sst_long, by = 'sub', all.x = FALSE, all.y = TRUE)

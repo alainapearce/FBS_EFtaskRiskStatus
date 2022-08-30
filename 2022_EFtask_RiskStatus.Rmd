@@ -25,7 +25,7 @@ geometry: margin=1.3cm
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(tidy = TRUE, tidy.opts = list(comment = FALSE), echo = TRUE, fig.width=6, fig.height=4, fig.path='figs/', echo=FALSE, warning=FALSE, message=FALSE, comment = NA)
+knitr::opts_chunk$set(tidy = TRUE, tidy.opts = list(comment = FALSE), echo = TRUE, fig.width=6, fig.height=4, fig.path='figs/', fig.pos='H', echo=FALSE, cache = FALSE, warning=FALSE, message=FALSE, comment = NA)
 ```
 
 <!-- load startup file and any extra packages -->
@@ -34,15 +34,20 @@ library(knitr)
 library(kableExtra)
 library(stats)
 library(haven)
+library(psycho)
+library(reshape2)
 library(gtsummary)
 theme_gtsummary_compact()
 
 library(car)
 library(emmeans)
-library(reshape2)
+
 library(lme4)
 library(lmerTest)
 library(ggplot2)
+library(ggpubr)
+library(ggsignif)
+
 
 source('functions.R')
 ```
@@ -50,6 +55,8 @@ source('functions.R')
 ```{r load_scripts, echo=FALSE, results='asis'}
 source('setup.R')
 source('tables.R')
+source('analyses.R')
+source('figures.R')
 ```
 
 \clearpage
@@ -58,7 +65,7 @@ source('tables.R')
 
 ```{r demo_tab, echo=FALSE, results='asis'}
 as_kable_extra(partab_risk, caption = 'Demographic Characteristics', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
-  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+  kableExtra::kable_styling(latex_options = "HOLD_position",  full_width = FALSE)
 ```
 
 \FloatBarrier
@@ -68,139 +75,63 @@ as_kable_extra(partab_risk, caption = 'Demographic Characteristics', format = "l
 
 ```{r gng_tab, echo=FALSE, results='asis'}
 as_kable_extra(gngtab, caption = 'Go-NoGo Performance Summary', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
-  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+  kableExtra::kable_styling(latex_options = "HOLD_position",  full_width = FALSE)
 ```
 
 \FloatBarrier
+
 ### Percent False Alarms
 
-```{r gng_fa_model_momrisk, echo=FALSE, results='hide'}
-gng_fa_model_mom <- lm(all_p_nogo_fa ~ sex + age_yr + risk_status_mom, data = r01_gng)
-gng_fa_model_sesmom <- lm(all_p_nogo_fa ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_gng)
+\FloatBarrier
 
-gng_fa_mom_sum <- summary(gng_fa_model_mom)
-gng_fa_sesmom_sum <- summary(gng_fa_model_sesmom)
+```{r gng_fa_avnova_momrisk, echo=FALSE, results='asis'}
+kable(anova2dataframe(gng_fa_anova), "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
 
-r01_gng$fa_pred_mom <- predict(gng_fa_model_mom, type = 'response')
+\
 
-r01_gng_ses <- r01_gng[!is.na(r01_gng$income) & !is.na(r01_gng$mom_ed), ]
-r01_gng_ses$fa_pred_sesmom <- predict(gng_fa_model_sesmom, type = 'response')
+```{r gng_fa_plot, echo=FALSE, include = TRUE, fig.height = 4, fig.width = 4}
+gng_fa_plot
 ```
 
 \FloatBarrier
 
-```{r gng_fa_regtab_momrisk, echo=FALSE, results='asis'}
-kable(gng_fa_mom_sum$coefficients, "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms', booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
-```
-
-\FloatBarrier
-
-```{r gng_fa_fig_momrisk, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 4}
-ggplot(r01_gng, aes(x=risk_status_mom, y=fa_pred_mom)) +
-  geom_violin(trim=FALSE, fill="cornflowerblue")+
-  labs(title="Go-NoGo", x="Risk Status (Mom BMI)", y = "Percent False Alarms - Adjusted for Sex and Age") +
-geom_boxplot(width=0.1) +
-  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
-    panel.background = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks = element_blank())
-```
-
-
-\FloatBarrier
-
-```{r gng_fa_regtab_ses_momrisk, echo=FALSE, results='asis'}
-kable(gng_fa_sesmom_sum$coefficients, "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms', booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
-```
-
-\FloatBarrier
-
-```{r gng_fa_fig_ses_momrisk, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 4}
-ggplot(r01_gng_ses, aes(x=risk_status_mom, y=fa_pred_sesmom)) +
-  geom_violin(trim=FALSE, fill="cornflowerblue")+
-  labs(title="Go-NoGo", x="Risk Status (Mom BMI)", y = "Percent False Alarms - Adjusted for Sex and Age") +
-geom_boxplot(width=0.1) +
-  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
-    panel.background = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks = element_blank())
-```
+There was a significant effect of familial obesity risk such that children with high risk had a false alarm percentage that was 7.8 points higher than those with low risk. SES, age, and sex were not associated with false alarm percentage.
 
 \FloatBarrier
 \clearpage
 
-### Percent Hits: Mom Risk Status
+### Percent Hits
 
-```{r gng_hits_model_momrisk, echo=FALSE, results='hide'}
-gng_hits_model_mom <- lm(all_p_go_hit ~ sex + age_yr + risk_status_mom, data = r01_gng)
-gng_hits_model_sesmom <- lm(all_p_go_hit ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_gng)
-
-gng_hits_mom_sum <- summary(gng_hits_model_mom)
-gng_hits_sesmom_sum <- summary(gng_hits_model_sesmom)
+```{r gng_hits_risk_anova, echo=FALSE, results='asis'}
+kable(anova2dataframe(gng_hits_anova), "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
+
+Correct responses to go stimuli did not differ by risk status, age, sex, or SES.
 
 \FloatBarrier
 
-```{r gng_hits_regtab_momrisk, echo=FALSE, results='asis'}
-kable(gng_hits_mom_sum$coefficients, "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits', booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
+### Go Reaction Time
+
+```{r gng_hits_rt_anova, echo=FALSE, results='asis'}
+kable(anova2dataframe(gng_rt_anova), "latex",  digits = 3, caption = 'Go-NoGo - Go Reaction Time', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
+
+Correct responses to go stimuli did not differ by risk status, sex, or SES. However, older children responded more quickly than younger children.
 
 \FloatBarrier
 
-```{r gng_hits_regtab_ses_momrisk, echo=FALSE, results='asis'}
-kable(gng_hits_sesmom_sum$coefficients, "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits', booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
+### d'
+
+```{r gng_dprime_risk_anova, echo=FALSE, results='asis'}
+kable(anova2dataframe(gng_dprime_anova), "latex",  digits = 3, caption = "Go-NoGo - d'", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
-\FloatBarrier
-\clearpage
-
-## N-Back
-
-```{r nback_merge_tab, echo=FALSE, results='asis'}
-as_kable_extra(nbacktab_all, caption = 'N-Back Performance Summary', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
-  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
-```
-
-\FloatBarrier
-\clearpage
-
-### Ballanced Accuracy: Mom Risk Status
-
-```{r nback_balacc_model_momrisk, echo=FALSE, results='hide'}
-nback_balacc_model_mom <- lm(p_target_ba ~ sex + age_yr + risk_status_mom*block, data = r01_nback[r01_nback$ses == 1, ])
-nback_balacc_model_sesmom <- lm(p_target_ba ~ mom_ed + income + sex + age_yr + risk_status_mom*block, data = r01_nback[r01_nback$ses == 1, ])
-
-nback_balacc_mom_sum <- summary(nback_balacc_model_mom)
-nback_balacc_sesmom_sum <- summary(nback_balacc_model_sesmom)
-
-r01_nback <- r01_nback[r01_nback$ses == 1, ]
-r01_nback$balacc_pred_mom <- predict(nback_balacc_model_mom, type = 'response')
-
-r01_nback_adjses <- r01_nback[r01_nback$ses == 1 & !is.na(r01_nback$income) & !is.na(r01_nback$mom_ed), ]
-r01_nback_adjses$balacc_pred_mom <- predict(nback_balacc_model_sesmom, type = 'response')
-```
-
-\FloatBarrier
-
-```{r nback_regtab_momrisk, echo=FALSE, results='asis'}
-kable(nback_balacc_mom_sum$coefficients, "latex",  digits = 3, caption = 'N-Back Ballanced Accuracy - Risk x Block', booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
-```
-
-\FloatBarrier
-
-```{r nback_fig_momrisk-block, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
-ggplot(r01_nback, aes(x=block, y=balacc_pred_mom, fill = risk_status_mom)) +
-  geom_violin(trim=FALSE)+
-  labs(title="Baseline N-Back: Block x Risk Status (Mom BMI)", x = "Block", y = "Ballanced Accuracy - Adjusted for Sex and Age") +
-  geom_boxplot(width = 0.1, position = position_dodge(width = 0.9)) +
-  scale_fill_manual(values=c("cornflowerblue", "orange", "#56B4E9")) +
-  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
-    panel.background = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks = element_blank())
-```
+Sensitivity indexed by d' did not differ by risk status, age, sex, or SES.
 
 \FloatBarrier
 \clearpage
@@ -209,141 +140,58 @@ ggplot(r01_nback, aes(x=block, y=balacc_pred_mom, fill = risk_status_mom)) +
 
 ```{r sstED_tab, echo=FALSE, results='asis'}
 as_kable_extra(sstED_tab, caption = 'Stop-Signal Task Performance Summary: Risk Status by Energy Density Condition', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
-  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+  kableExtra::kable_styling(latex_options = "HOLD_position",  full_width = FALSE)
 ```
 
 ```{r sstPS_tab, echo=FALSE, results='asis'}
 as_kable_extra(sstPS_tab, caption = 'Stop-Signal Task Performance Summary: Risk Status by Portion Size Condition', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
-  kableExtra::kable_styling(latex_options = "hold_position",  full_width = FALSE)
+  kableExtra::kable_styling(latex_options = "HOLD_position",  full_width = FALSE)
 ```
 
 \FloatBarrier
 \clearpage
 
-### Stop Signal Delay: Mom Risk Status
+### Stop Signal Reaction Time
 
-#### All Trials
-
-\FloatBarrier
-
-```{r sst_ssd_all_momrisk, echo=FALSE, results='hide'}
-sst_ssd_model_mom <- lm(all_ssd ~ sex + age_yr + risk_status_mom, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
-
-sst_ssd_model_sesmom <- lm(all_ssd ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
-
-sst_ssd_mom_sum <- summary(sst_ssd_model_mom)
-sst_ssd_sesmom_sum <- summary(sst_ssd_model_sesmom)
-
-r01_sst_cond_rhgood <- r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ]
-r01_sst_cond_rhgood$ssd_pred_mom <- predict(sst_ssd_model_mom, type = 'response')
-
-r01_sst_cond_rhgood_adjses <- r01_sst_cond[r01_sst_cond$all_racehorse_check == 1 & !is.na(r01_sst_cond$income) & !is.na(r01_sst_cond$mom_ed), ]
-r01_sst_cond_rhgood_adjses$ssd_pred_mom <- predict(sst_ssd_model_sesmom, type = 'response')
-```
-
-
-```{r sst_ssd_allreg_momrisk, echo=FALSE, results='asis'}
-kable(sst_ssd_mom_sum$coefficients, "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Risk Status', booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
-```
+#### Design
 
 \FloatBarrier
 
-```{r sst_ssd_all_fig_momrisk, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
-ggplot(r01_sst_cond_rhgood, aes(x=risk_status_mom, y=ssd_pred_mom)) +
-  geom_violin(trim=FALSE, fill = 'cornflowerblue')+
-  labs(title="Stop-Signal Task - All Trials", x = "Risk Status (Mom BMI)", y = "SSD - Adjusted for Sex and Age") +
-  geom_boxplot(width = 0.1, ) +
-  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
-    panel.background = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks = element_blank())
+```{r sst_ssrtdesign_anova, echo=FALSE, results='asis'}
+kable(anova2dataframe(sst_ssrtdesign_anova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - ED x PS', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
-\FloatBarrier
+\
+
+```{r sst_ssrtdesign_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+sst_ssrtdesign_plot
+```
+
+No effect of energy density, portion size, or interaction.
+
 \clearpage
 
-#### Energy Density Trials
+#### Overall
 
 \FloatBarrier
 
-```{r sst_ssd_ED_momrisk, echo=FALSE, results='hide'}
-sst_ssd_EDmodel <- lmer(ssd ~ sex + age_yr + order + ED + (1|sub), data = r01_sst_EDlong)
-sst_ssd_EDmodel_ses <- lmer(ssd ~ mom_ed + income + sex + age_yr + ED + (1|sub), data = r01_sst_EDlong)
-
-sst_ssd_EDmodel_mom <- lmer(ssd ~ sex + age_yr + order + ED*risk_status_mom + (1|sub), data = r01_sst_EDlong)
-
-sst_ssdED_mom_sum <- summary(sst_ssd_EDmodel_mom)
+```{r sst_ssrt_risk_anova, echo=FALSE, results='asis'}
+kable(anova2dataframe(sst_ssrt_anova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Risk Status', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
-```{r sst_ssd_EDreg_momrisk, echo=FALSE, results='asis'}
-kable(sst_ssdED_mom_sum$coefficients, "latex",  digits = 3, caption = 'Stop-Signal Task SSD (integration) - Risk Status x ED', booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
+\
+
+```{r sst_ssrt_risk_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+sst_ssrt_plot
 ```
 
-\FloatBarrier
+Across all trials, there was a significant effect of familial obesity risk on stop-signal reaction time (SSRT). SSRT was slower (worse) in children with high risk compared to those with low risk. Additionally, older children were showed faster SSRT. There was no association with sex or SES.
 
-#### Portion Size Trials
-
-\FloatBarrier
-
-```{r sst_ssd_PS_momrisk, echo=FALSE, results='hide'}
-sst_ssd_PSmodel <- lmer(ssd ~ sex + age_yr + order + PS + (1|sub), data = r01_sst_PSlong)
-sst_ssd_model_ses <- lmer(ssd ~ mom_ed + income + sex + age_yr + PS + (1|sub), data = r01_sst_PSlong)
-
-sst_ssd_PSmodel_mom <- lmer(ssd ~ sex + age_yr + PS*risk_status_mom + (1|sub), data = r01_sst_PSlong)
-sst_ssd_PSmodel_sesmom <- lmer(ssd ~ mom_ed + income + sex + age_yr + PS*risk_status_mom + (1|sub), data = r01_sst_PSlong)
-
-sst_ssdPS_mom_sum <- summary(sst_ssd_PSmodel_mom)
-sst_ssdPS_sesmom_sum <- summary(sst_ssd_PSmodel_sesmom)
-```
-
-```{r sst_ssd_PSreg_momrisk, echo=FALSE, results='asis'}
-kable(sst_ssdPS_mom_sum$coefficients, "latex",  digits = 3, caption = 'Stop-Signal Task SSD (integration) - Risk Status x PS', booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
-```
-
-\FloatBarrier
-
-<!-- #### Energy Denisy x Portion Size -->
-
-<!-- ```{r sst_ssd_ED-PS_momrisk, echo=FALSE, results='hide'} -->
-<!-- sst_ssd_EDxPSmodel <- lmer(ssd ~ sex + age_yr + ED*PS + (1|sub), data = r01_sst_long[r01_sst_long$ncond_racehorse_good == 4, ]) -->
-<!-- sst_ssd_EDxPSmodel_ses <- lmer(ssd ~ mom_ed + income + sex + age_yr + ED*PS + (1|sub), data = r01_sst_long[r01_sst_long$ncond_racehorse_good == 4, ]) -->
-<!-- ``` -->
-
-### Stop Signal Reaction Time: Mom Risk Status
-
-#### All Trials
-
-\FloatBarrier
-
-```{r sst_ssrt_all_momrisk, echo=FALSE, results='hide'}
-sst_ssrt_model_mom <- lm(all_ssrt_int ~ sex + age_yr + risk_status_mom, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
-
-sst_ssrt_model_sesmom <- lm(all_ssrt_int ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
-
-sst_ssrt_mom_sum <- summary(sst_ssrt_model_mom)
-sst_ssrt_sesmom_sum <- summary(sst_ssrt_model_sesmom)
-
-r01_sst_cond_rhgood$ssrt_pred_mom <- predict(sst_ssrt_model_mom, type = 'response')
-r01_sst_cond_rhgood_adjses$ssrt_pred_mom <- predict(sst_ssrt_model_sesmom, type = 'response')
-```
-
-```{r sst_ssrt_allreg_momrisk, echo=FALSE, results='asis'}
-kable(sst_ssrt_mom_sum$coefficients, "latex",  digits = 3, caption = 'Stop-Signal Task SSRT (integration) - Risk Status', booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
-```
-
-\FloatBarrier
-
-```{r sst_ssrt_all_fig_momrisk, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
-ggplot(r01_sst_cond_rhgood, aes(x=risk_status_mom, y=ssrt_pred_mom)) +
-  geom_violin(trim=FALSE, fill = 'cornflowerblue')+
-  labs(title="Stop-Signal Task - All Trials", x = "Risk Status (Mom BMI)", y = "SSRT (integration) - Adjusted for Sex and Age") +
-  geom_boxplot(width = 0.1, ) +
-  theme(panel.border = element_blank(), panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
-    panel.background = element_blank(), axis.text.x = element_text(angle = 90), axis.ticks = element_blank())
+```{r sst_ssrt_risk_anova_posthoc}
+emmeans(sst_ssrt_model, specs = pairwise ~ risk_status_mom)
+test(emtrends(sst_ssrt_model, ~age_yr, var = 'age_yr'))
 ```
 
 \FloatBarrier
@@ -353,41 +201,199 @@ ggplot(r01_sst_cond_rhgood, aes(x=risk_status_mom, y=ssrt_pred_mom)) +
 
 \FloatBarrier
 
-```{r sst_ssrt_ED_momrisk, echo=FALSE, results='hide'}
-sst_ssrt_EDmodel <- lmer(ssrt_int ~ sex + age_yr + ED + (1|sub), data = r01_sst_EDlong)
-sst_ssrt_model_ses <- lmer(ssrt_int ~ mom_ed + income + sex + age_yr + ED + (1|sub), data = r01_sst_EDlong)
-
-sst_ssrt_EDmodel_mom <- lmer(ssrt_int ~ sex + age_yr + ED*risk_status_mom + (1|sub), data = r01_sst_EDlong)
-sst_ssrt_EDmodel_sesmom <- lmer(ssrt_int ~ mom_ed + income + sex + age_yr + ED*risk_status_mom + (1|sub), data = r01_sst_EDlong)
-
-sst_ssrtED_mom_sum <- summary(sst_ssrt_EDmodel_mom)
-sst_ssrtED_sesmom_sum <- summary(sst_ssrt_EDmodel_sesmom)
+```{r sst_ssrt_risk_EDanova, echo=FALSE, results='asis'}
+kable(anova2dataframe(sst_ssrt_EDanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - ED x Risk Status', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
-```{r sst_ssrt_EDreg_momrisk, echo=FALSE, results='asis'}
-kable(sst_ssrtED_mom_sum$coefficients, "latex",  digits = 3, caption = 'Stop-Signal Task SSRT (integration) - Risk Status x ED', booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
+\
+
+```{r sst_ssrtED_risk_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+sst_ssrtED_plot
 ```
 
+SSRT was slower (worse) in children with high risk compared to those with low risk. 
+
+```{r sst_ssrt_risk_EDanova_posthoc}
+emmeans(sst_ssrt_EDmodel, specs = pairwise ~ risk_status_mom)
+```
 \FloatBarrier
+\clearpage
 
 #### Portion Size Trials
 
 \FloatBarrier
 
-```{r sst_ssrt_PS_momrisk, echo=FALSE, results='hide'}
-sst_ssrt_PSmodel <- lmer(ssrt_int ~ sex + age_yr + PS + (1|sub), data = r01_sst_PSlong)
-sst_ssrt_model_ses <- lmer(ssrt_int ~ mom_ed + income + sex + age_yr + PS + (1|sub), data = r01_sst_PSlong)
-
-sst_ssrt_PSmodel_mom <- lmer(ssrt_int ~ sex + age_yr + PS*risk_status_mom + (1|sub), data = r01_sst_PSlong)
-sst_ssrt_PSmodel_sesmom <- lmer(ssrt_int ~ mom_ed + income + sex + age_yr + PS*risk_status_mom + (1|sub), data = r01_sst_PSlong)
-
-sst_ssrtPS_mom_sum <- summary(sst_ssrt_PSmodel_mom)
-sst_ssrtPS_sesmom_sum <- summary(sst_ssrt_PSmodel_sesmom)
+```{r sst_ssrt_risk_PSanova, echo=FALSE, results='asis'}
+kable(anova2dataframe(sst_ssrt_PSanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - PS x Risk Status', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
-```{r sst_ssrt_PSreg_momrisk, echo=FALSE, results='asis'}
-kable(sst_ssrtPS_mom_sum$coefficients, "latex",  digits = 3, caption = 'Stop-Signal Task SSRT (integration) - Risk Status x PS', booktabs=TRUE) %>%
-  kable_styling(latex_options = c("hold_position", "repeat_header"))
+\
+
+```{r sst_ssrtPS_risk_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+sst_ssrtPS_plot
 ```
 
+SSRT was slower (worse) in children with high risk compared to those with low risk. 
+
+```{r sst_ssrt_risk_PSanova_posthoc}
+emmeans(sst_ssrt_PSmodel, specs = pairwise ~ risk_status_mom)
+```
+\FloatBarrier
+\clearpage
+
+### Stop Signal Delay
+
+#### Design
+
+\FloatBarrier
+
+```{r sst_ssddesign_anova, echo=FALSE, results='asis'}
+kable(anova2dataframe(sst_ssddesign_anova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - ED x PS', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\
+
+```{r sst_ssddesign_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+sst_ssddesign_plot
+```
+
+No effect of portion size or interaction. A trend for an effect of  energy density such that there was a lower SSD (worse) for high ED compared to low ED blocks. 
+
+```{r sst_ssddesign_anova_posthoc, echo=FALSE}
+emmeans(sstdesign_ssd_model, specs = pairwise ~ ED)
+```
+
+
+\FloatBarrier
+
+```{r sst_ssddesignED_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+sst_ssddesignED_plot
+```
+
+\FloatBarrier
+\clearpage
+
+#### All Trials
+
+
+```{r sst_ssd_risk_anova, echo=FALSE, results='asis'}
+kable(anova2dataframe(sst_ssd_anova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Risk Status', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\
+
+```{r sst_ssd_risk_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+sst_ssd_plot
+```
+
+Main effect of risk status such that children at high risk have shorter stop signal delays (worse) than children at low risk. 
+
+```{r sst_ssd_risk_anova_posthoc, echo=FALSE}
+emmeans(sst_ssd_model, specs = pairwise ~ risk_status_mom)
+```
+
+\FloatBarrier
+\clearpage
+
+#### Energy Density Trials
+
+\FloatBarrier
+
+```{r sst_ssd_risk_EDanova, echo=FALSE, results='asis'}
+kable(anova2dataframe(sst_ssd_EDanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Risk Status x ED', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\
+
+```{r sst_ssdED_risk_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+sst_ssdED_plot
+```
+
+Main effect of risk status such that children at high risk have shorter stop signal delays (worse) than children at low risk. Boys also have shorter stop signal delays than girls.
+
+```{r sst_ssd_risk_EDanova_posthoc, echo=FALSE}
+emmeans(sst_ssd_EDmodel, specs = pairwise ~ risk_status_mom)
+emmeans(sst_ssd_EDmodel, specs = pairwise ~ sex)
+```
+
+\FloatBarrier
+\clearpage
+
+#### Portion Size Trials
+
+\FloatBarrier
+
+```{r sst_ssd_risk_PSanova, echo=FALSE, results='asis'}
+kable(anova2dataframe(sst_ssd_PSanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Risk Status x PS', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\
+
+```{r sst_ssdPS_risk_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+sst_ssdPS_plot
+```
+
+Main effect of risk status such that children at high risk have shorter stop signal delays (worse) than children at low risk. Boys also have shorter stop signal delays than girls.
+
+```{r sst_ssd_risk_PSanova_posthoc, echo=FALSE}
+emmeans(sst_ssd_PSmodel, specs = pairwise ~ risk_status_mom)
+emmeans(sst_ssd_PSmodel, specs = pairwise ~ PS)
+emmeans(sst_ssd_PSmodel, specs = pairwise ~ sex)
+```
+
+\FloatBarrier
+\clearpage
+
+## N-back
+
+### Ballanced Accuracy
+
+\FloatBarrier
+
+```{r nback_balacc_risk_anova, echo=FALSE, results='asis'}
+kable(anova2dataframe(nback_balacc_anova), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Risk Status x Load', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+```{r nback_balacc_risk_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+nback_balacc_plot
+```
+
+Interaction between risk and load shows that children at high familial risk for obesity perform worse at the highest working memory load compared to children at low risk.
+
+```{r nback_balacc_risk_anova_posthoc, echo=FALSE}
+emmeans(nback_balacc_mod, specs = pairwise ~ block, adjust = 'fdr')
+emmeans(nback_balacc_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'fdr')
+```
+
+\FloatBarrier
+\clearpage
+
+### d'
+
+\FloatBarrier
+
+```{r nback_dprime_risk_anova, echo=FALSE, results='asis'}
+kable(anova2dataframe(nback_dprime_anova), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Risk Status x Load', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+```{r nback_dprime_risk_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+nback_drime_plot
+```
+
+Interaction between risk and load shows that children at high familial risk for obesity perform worse at the highest working memory load compared to children at low risk.
+
+```{r nback_dprime_risk_anova_posthoc, echo=FALSE}
+emmeans(nback_dprime_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'fdr')
+emmeans(nback_dprime_mod, specs = pairwise ~ block, adjust = 'fdr')
+```
+
+\FloatBarrier
+\clearpage
