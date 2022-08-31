@@ -25,7 +25,7 @@
 # source('setup.R')
 
 ## participant table
-partab_data <- covariates_dat[covariates_dat$risk_status_mom != 'Neither', c(8, 12, 10, 14:18, 20, 26, 25, 27:28, 82)]
+partab_data <- covariates_dat[covariates_dat$risk_status_mom != 'Neither' & covariates_dat$bmi_screenout == 0, c(8, 12, 10, 14:18, 20, 26, 25, 27:28, 82)]
 
 partab_data$risk_status_mom <- droplevels(partab_data$risk_status_mom)
 
@@ -35,9 +35,13 @@ partab_risk <-
     by = risk_status_mom,
     value = list(age_yr ~ "Age, yr", sex ~ "Sex", ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income", mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education", bmi_percentile ~ "BMI %tile", dxa_total_body_perc_fat ~ 'Total Body Fat %', dxa_total_fat_mass ~ 'Total Fat Mass', dxa_est_vat_mass ~ 'Visceral Fat Mass', dxa_total_lean_mass ~ 'Lean Fat Mass', wasi_fsiq2 ~ 'IQ'),
     label = list(age_yr ~ "Age, yr", sex ~ "Sex", ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income", mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education", bmi_percentile ~ "BMI %tile", dxa_total_body_perc_fat ~ 'Total Body Fat %', dxa_total_fat_mass ~ 'Total Fat Mass', dxa_est_vat_mass ~ 'Visceral Fat Mass', dxa_total_lean_mass ~ 'Lean Fat Mass', wasi_fsiq2 ~ 'IQ'),
+    type = list(age_yr ~ "continuous", sex ~ "categorical", ethnicity ~ "categorical", race ~ "categorical", income ~ "categorical", mom_ed ~ "categorical", dad_ed ~ "categorical", bmi_percentile ~ "continuous", dxa_total_body_perc_fat ~ 'continuous', dxa_total_fat_mass ~ 'continuous', dxa_est_vat_mass ~ 'continuous', dxa_total_lean_mass ~ 'continuous', wasi_fsiq2 ~ 'continuous'),
     statistic = all_continuous() ~ c("{mean} [{min} - {max}]"),
     missing = "ifany",
-    digits = all_continuous() ~ 1)
+    digits = all_continuous() ~ 1) %>%
+add_p(test = all_continuous() ~ "t.test") %>%
+  modify_header(statistic ~ "**Test Statistic**") %>%
+  modify_fmt_fun(statistic ~ style_sigfig)
 
 
 ## GNG table
@@ -48,6 +52,7 @@ gngtab <-
     by = risk_status_mom,
     value = list(all_n_go_miss ~ "Missed, N", all_p_go_miss ~ "Missed, %", all_n_nogo_fa ~ "False Alarm, N", all_p_nogo_fa ~ "False Alarm, %", all_rt_mean_go_hit ~ "Mean Hit RT, ms", all_rt_mean_nogo_fa ~ "Mean False Alarm RT, ms", all_d_prime_ll ~ "d', loglinear"),
     label = list(all_n_go_miss ~ "Missed, N", all_p_go_miss ~ "Missed, %", all_n_nogo_fa ~ "False Alarm, N", all_p_nogo_fa ~ "False Alarm, %", all_rt_mean_go_hit ~ "Mean Hit RT, ms", all_rt_mean_nogo_fa ~ "Mean False Alarm RT, ms", all_d_prime_ll ~ "d', loglinear"),
+    type = list(all_n_go_miss ~ "continuous", all_p_go_miss ~ "continuous", all_n_nogo_fa ~ "continuous", all_p_nogo_fa ~ "continuous", all_rt_mean_go_hit ~ "continuous", all_rt_mean_nogo_fa ~ "continuous", all_d_prime_ll ~ "continuous"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "no",
     digits = all_continuous() ~ 1)
@@ -63,7 +68,7 @@ nback0tab <-
     by = risk_status_mom,
     value = list(n_target_hit ~ "Hits, N", p_target_hit ~ "Hits, %", n_fill_fa ~ "False Alarm, N", p_fill_fa ~ "False Alarm, %", p_target_ba ~ "Ballanced Acc, %", rt_mean_target_hit ~ "Target RT, ms"),
     label = list(n_target_hit ~ "Hits, N", p_target_hit ~ "Hits, %", n_fill_fa ~ "False Alarm, N", p_fill_fa ~ "False Alarm, %", p_target_ba ~ "Ballanced Acc, %", rt_mean_target_hit ~ "Target RT, ms"),
-    type = list(n_target_hit ~ "continuous", p_target_hit ~ "continuous", n_fill_fa ~ "continuous", p_fill_fa ~ "continuous"),
+    type = list(n_target_hit ~ "continuous", p_target_hit ~ "continuous", n_fill_fa ~ "continuous", p_fill_fa ~ "continuous", p_target_ba ~ "continuous", rt_mean_target_hit ~ "continuous"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "no",
     digits = all_continuous() ~ 1)
@@ -74,7 +79,7 @@ nback1tab <-
     by = risk_status_mom,
     value = list(n_target_hit ~ "Hits, N", p_target_hit ~ "Hits, %", n_fill_fa ~ "False Alarm, N", p_fill_fa ~ "False Alarm, %", p_target_ba ~ "Ballanced Acc, %", rt_mean_target_hit ~ "Target RT, ms"),
     label = list(n_target_hit ~ "Hits, N", p_target_hit ~ "Hits, %", n_fill_fa ~ "False Alarm, N", p_fill_fa ~ "False Alarm, %", p_target_ba ~ "Ballanced Acc, %", rt_mean_target_hit ~ "Target RT, ms"),
-    type = list(n_target_hit ~ "continuous", p_target_hit ~ "continuous", n_fill_fa ~ "continuous", p_fill_fa ~ "continuous"),
+    type = list(n_target_hit ~ "continuous", p_target_hit ~ "continuous", n_fill_fa ~ "continuous", p_fill_fa ~ "continuous", p_target_ba ~ "continuous", rt_mean_target_hit ~ "continuous"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "no",
     digits = all_continuous() ~ 1)
@@ -85,7 +90,7 @@ nback2tab <-
     by = risk_status_mom,
     value = list(n_target_hit ~ "Hits, N", p_target_hit ~ "Hits, %", n_fill_fa ~ "False Alarm, N", p_fill_fa ~ "False Alarm, %", p_target_ba ~ "Ballanced Acc, %", rt_mean_target_hit ~ "Target RT, ms"),
     label = list(n_target_hit ~ "Hits, N", p_target_hit ~ "Hits, %", n_fill_fa ~ "False Alarm, N", p_fill_fa ~ "False Alarm, %", p_target_ba ~ "Ballanced Acc, %", rt_mean_target_hit ~ "Target RT, ms"),
-    type = list(n_fill_fa ~ "continuous", p_fill_fa ~ "continuous"),
+    type = list(n_target_hit ~ "continuous", p_target_hit ~ "continuous", n_fill_fa ~ "continuous", p_fill_fa ~ "continuous", p_target_ba ~ "continuous", rt_mean_target_hit ~ "continuous"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "no",
     digits = all_continuous() ~ 1)
@@ -109,7 +114,7 @@ sstEDlow_tab <-
     by = risk_status_mom,
     value = list(go_rt ~ "Go RT, ms", n_error ~ "L/R Response Error, N", n_miss ~ "Misses, N", ssd ~ "SSD, ms", ssrt_mean ~ "SSRT - Mean Method, ms", ssrt_int ~ "SSRT - Integration Method, ms"),
     label = list(go_rt ~ "Go RT, ms", n_error ~ "L/R Response Error, N", n_miss ~ "Misses, N", ssd ~ "SSD, ms", ssrt_mean ~ "SSRT - Mean Method, ms", ssrt_int ~ "SSRT - Integration Method, ms"),
-    type = list(n_error ~ "continuous", n_miss ~ "continuous"),
+    type = list(go_rt ~ "continuous", n_error ~ "continuous", n_miss ~ "continuous", ssd ~ "continuous", ssrt_mean ~ "continuous", ssrt_int ~ "continuous"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "no",
     digits = all_continuous() ~ 1)
@@ -120,7 +125,7 @@ sstEDhigh_tab <-
     by = risk_status_mom,
     value = list(go_rt ~ "Go RT, ms", n_error ~ "L/R Response Error, N", n_miss ~ "Misses, N", ssd ~ "SSD, ms", ssrt_mean ~ "SSRT - Mean Method, ms", ssrt_int ~ "SSRT - Integration Method, ms"),
     label = list(go_rt ~ "Go RT, ms", n_error ~ "L/R Response Error, N", n_miss ~ "Misses, N", ssd ~ "SSD, ms", ssrt_mean ~ "SSRT - Mean Method, ms", ssrt_int ~ "SSRT - Integration Method, ms"),
-    type = list(n_error ~ "continuous", n_miss ~ "continuous"),
+    type = list(go_rt ~ "continuous", n_error ~ "continuous", n_miss ~ "continuous", ssd ~ "continuous", ssrt_mean ~ "continuous", ssrt_int ~ "continuous"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "no",
     digits = all_continuous() ~ 1)
@@ -137,7 +142,7 @@ sstPSlarge_tab <-
     by = risk_status_mom,
     value = list(go_rt ~ "Go RT, ms", n_error ~ "L/R Response Error, N", n_miss ~ "Misses, N", ssd ~ "SSD, ms", ssrt_mean ~ "SSRT - Mean Method, ms", ssrt_int ~ "SSRT - Integration Method, ms"),
     label = list(go_rt ~ "Go RT, ms", n_error ~ "L/R Response Error, N", n_miss ~ "Misses, N", ssd ~ "SSD, ms", ssrt_mean ~ "SSRT - Mean Method, ms", ssrt_int ~ "SSRT - Integration Method, ms"),
-    type = list(n_error ~ "continuous", n_miss ~ "continuous"),
+    type = list(go_rt ~ "continuous", n_error ~ "continuous", n_miss ~ "continuous", ssd ~ "continuous", ssrt_mean ~ "continuous", ssrt_int ~ "continuous"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "no",
     digits = all_continuous() ~ 1)
@@ -148,7 +153,7 @@ sstPSsmall_tab <-
     by = risk_status_mom,
     value = list(go_rt ~ "Go RT, ms", n_error ~ "L/R Response Error, N", n_miss ~ "Misses, N", ssd ~ "SSD, ms", ssrt_mean ~ "SSRT - Mean Method, ms", ssrt_int ~ "SSRT - Integration Method, ms"),
     label = list(go_rt ~ "Go RT, ms", n_error ~ "L/R Response Error, N", n_miss ~ "Misses, N", ssd ~ "SSD, ms", ssrt_mean ~ "SSRT - Mean Method, ms", ssrt_int ~ "SSRT - Integration Method, ms"),
-    type = list(n_error ~ "continuous", n_miss ~ "continuous"),
+    type = list(go_rt ~ "continuous", n_error ~ "continuous", n_miss ~ "continuous", ssd ~ "continuous", ssrt_mean ~ "continuous", ssrt_int ~ "continuous"),
     statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "no",
     digits = all_continuous() ~ 1)

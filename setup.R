@@ -153,10 +153,9 @@ r01_health$dad_ed <- ifelse(r01_health$measured_parent == 1, ifelse(r01_health$p
 r01_health[c(106, 119, 128, 143)] <- sapply(r01_health[c(106, 119, 128, 143)], as.numeric)
 
 #### Covariates Data ####
-covariates_dat <- merge(r01_demo[c(1:16, 337:338, 19:24)], r01_health[c(1, 106, 119, 128, 143)], by = 'sub', all.x = TRUE, all.y = TRUE)
+covariates_dat <- merge(r01_demo[c(1:16, 337:338, 19:24)], r01_health[c(1, 106, 119, 128, 143)], by = 'sub', all.x = TRUE, all.y = FALSE)
 
-covariates_dat <- merge(covariates_dat, r01_qs_cps[c(1, 341:388, 392:398)], by = 'sub', all.x = TRUE, all.y = TRUE)
-
+covariates_dat <- merge(covariates_dat, r01_qs_cps[c(1, 341:388, 392:398)], by = 'sub', all.x = TRUE, all.y = FALSE)
 
 #### Go No-Go ####
 
@@ -189,7 +188,7 @@ r01_gng$risk_status_mom <- droplevels(r01_gng$risk_status_mom)
 r01_nback <- read.csv("data/task-nback_summary_long.tsv", header = TRUE, sep = "\t")
 
 #remove 2 that were removed for ADHD
-r01_nback <- r01_nback[r01_nback$sub != 31 & r01_nback$sub != 34, ]
+r01_nback <- r01_nback[r01_nback$sub != 31 & r01_nback$sub != 34 & r01_nback$ses == 1, ]
 
 #merge
 r01_nback <- merge(covariates_dat, r01_nback, by = 'sub', all.x = FALSE, all.y = TRUE)
@@ -312,5 +311,4 @@ r01_sst_PSlong$risk_status_mom <- droplevels(r01_sst_PSlong$risk_status_mom)
 
 r01_sst_cond <- r01_sst_cond[r01_sst_cond$risk_status_mom != 'Neither', ]
 r01_sst_cond$risk_status_mom <- droplevels(r01_sst_cond$risk_status_mom)
-
 

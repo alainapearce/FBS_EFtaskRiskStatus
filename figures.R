@@ -170,5 +170,51 @@ nback_drime_plot <- ggplot(r01_nback_ses, aes(x=block, y=dprime_pred, fill = ris
         legend.title = element_blank())
 
 
+## SST - exploratory analyses ####
 
+# SSD - Overall
+sst_ssd_bfp_plot <- ggplot(r01_sst_bfp_ses, aes(x=dxa_total_body_perc_fat, y=ssd_pred)) +
+  geom_smooth(method = 'lm')+
+  scale_color_manual(values = c("cornflowerblue", "orange", "purple")) +
+  labs(title="Stop-Signal Task",
+       x="Total Body Fat Percentage",
+       y = "Stop Signal Delay, ms \n (Adjusted for Sex, Age, and SES)") +
+  theme_pubr(base_size = 16) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank())
+
+# SSD - ED
+sst_ssd_bfp_EDplot <- ggplot(r01_sst_bfp_ED_ses, aes(x=dxa_total_body_perc_fat, y=ssd_pred, color = ED)) +
+  geom_smooth(method = 'lm')+
+  scale_color_manual(values = c("cornflowerblue", "orange", "purple")) +
+  labs(title="Stop-Signal Task - Energy Density",
+       x="Total Body Fat Percentage",
+       y = "Stop Signal Delay, ms \n (Adjusted for Sex, Age, and SES)") +
+  theme_pubr(base_size = 16) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank())
+
+# SSD - PS
+sst_ssd_bfp_PSplot <- ggplot(r01_sst_bfp_PS_ses, aes(x=dxa_total_body_perc_fat, y=ssd_pred, color = PS)) +
+  geom_smooth(method = 'lm')+
+  scale_color_manual(values = c("cornflowerblue", "orange", "purple")) +
+  labs(title="Stop-Signal Task - Portion Size",
+       x="Total Body Fat Percentage",
+       y = "Stop Signal Delay, ms \n (Adjusted for Sex, Age, and SES)") +
+  theme_pubr(base_size = 16) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank())
+
+## N-Back - exploratory analyses ####
+
+# Balanced Accuracy
+nback_balacc_bfp_plot <- ggplot(r01_nback_bfp_ses, aes(x=dxa_total_body_perc_fat, y=balacc_pred, color = block)) +
+  geom_smooth(method = 'lm')+
+  scale_color_manual(values = c("cornflowerblue", "orange", "purple")) +
+  labs(title="N-Back Task",
+       x="Total Body Fat Percentage",
+       y = "Balanced Accuracy, % \n (Adjusted for Sex, Age, and SES)") +
+  theme_pubr(base_size = 16) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank())
 

@@ -64,14 +64,14 @@ source('figures.R')
 # Participant Characteristics (Demographics Database)
 
 ```{r demo_tab, echo=FALSE, results='asis'}
-as_kable_extra(partab_risk, caption = 'Demographic Characteristics', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  as_kable_extra(partab_risk, caption = 'Demographic Characteristics', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
   kableExtra::kable_styling(latex_options = "HOLD_position",  full_width = FALSE)
 ```
 
 \FloatBarrier
 \clearpage
 
-## Go-NoGo
+# Go-NoGo
 
 ```{r gng_tab, echo=FALSE, results='asis'}
 as_kable_extra(gngtab, caption = 'Go-NoGo Performance Summary', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
@@ -80,7 +80,7 @@ as_kable_extra(gngtab, caption = 'Go-NoGo Performance Summary', format = "latex"
 
 \FloatBarrier
 
-### Percent False Alarms
+## Percent False Alarms
 
 \FloatBarrier
 
@@ -102,7 +102,7 @@ There was a significant effect of familial obesity risk such that children with 
 \FloatBarrier
 \clearpage
 
-### Percent Hits
+## Percent Hits
 
 ```{r gng_hits_risk_anova, echo=FALSE, results='asis'}
 kable(anova2dataframe(gng_hits_anova), "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits', booktabs=TRUE) %>%
@@ -113,7 +113,7 @@ Correct responses to go stimuli did not differ by risk status, age, sex, or SES.
 
 \FloatBarrier
 
-### Go Reaction Time
+## Go Reaction Time
 
 ```{r gng_hits_rt_anova, echo=FALSE, results='asis'}
 kable(anova2dataframe(gng_rt_anova), "latex",  digits = 3, caption = 'Go-NoGo - Go Reaction Time', booktabs=TRUE) %>%
@@ -124,7 +124,7 @@ Correct responses to go stimuli did not differ by risk status, sex, or SES. Howe
 
 \FloatBarrier
 
-### d'
+## d'
 
 ```{r gng_dprime_risk_anova, echo=FALSE, results='asis'}
 kable(anova2dataframe(gng_dprime_anova), "latex",  digits = 3, caption = "Go-NoGo - d'", booktabs=TRUE) %>%
@@ -136,7 +136,7 @@ Sensitivity indexed by d' did not differ by risk status, age, sex, or SES.
 \FloatBarrier
 \clearpage
 
-## Stop-Signal Task
+# Stop-Signal Task
 
 ```{r sstED_tab, echo=FALSE, results='asis'}
 as_kable_extra(sstED_tab, caption = 'Stop-Signal Task Performance Summary: Risk Status by Energy Density Condition', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
@@ -151,9 +151,9 @@ as_kable_extra(sstPS_tab, caption = 'Stop-Signal Task Performance Summary: Risk 
 \FloatBarrier
 \clearpage
 
-### Stop Signal Reaction Time
+## Stop Signal Reaction Time
 
-#### Design
+### Design
 
 \FloatBarrier
 
@@ -172,7 +172,7 @@ No effect of energy density, portion size, or interaction.
 
 \clearpage
 
-#### Overall
+### Overall
 
 \FloatBarrier
 
@@ -197,7 +197,7 @@ test(emtrends(sst_ssrt_model, ~age_yr, var = 'age_yr'))
 \FloatBarrier
 \clearpage
 
-#### Energy Density Trials
+### Energy Density Trials
 
 \FloatBarrier
 
@@ -220,7 +220,7 @@ emmeans(sst_ssrt_EDmodel, specs = pairwise ~ risk_status_mom)
 \FloatBarrier
 \clearpage
 
-#### Portion Size Trials
+### Portion Size Trials
 
 \FloatBarrier
 
@@ -243,9 +243,9 @@ emmeans(sst_ssrt_PSmodel, specs = pairwise ~ risk_status_mom)
 \FloatBarrier
 \clearpage
 
-### Stop Signal Delay
+## Stop Signal Delay
 
-#### Design
+### Design
 
 \FloatBarrier
 
@@ -276,7 +276,7 @@ sst_ssddesignED_plot
 \FloatBarrier
 \clearpage
 
-#### All Trials
+### All Trials
 
 
 ```{r sst_ssd_risk_anova, echo=FALSE, results='asis'}
@@ -299,7 +299,7 @@ emmeans(sst_ssd_model, specs = pairwise ~ risk_status_mom)
 \FloatBarrier
 \clearpage
 
-#### Energy Density Trials
+### Energy Density Trials
 
 \FloatBarrier
 
@@ -324,7 +324,7 @@ emmeans(sst_ssd_EDmodel, specs = pairwise ~ sex)
 \FloatBarrier
 \clearpage
 
-#### Portion Size Trials
+### Portion Size Trials
 
 \FloatBarrier
 
@@ -350,9 +350,9 @@ emmeans(sst_ssd_PSmodel, specs = pairwise ~ sex)
 \FloatBarrier
 \clearpage
 
-## N-back
+# N-back
 
-### Ballanced Accuracy
+## Ballanced Accuracy
 
 \FloatBarrier
 
@@ -375,7 +375,7 @@ emmeans(nback_balacc_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'fd
 \FloatBarrier
 \clearpage
 
-### d'
+## d'
 
 \FloatBarrier
 
@@ -393,6 +393,230 @@ Interaction between risk and load shows that children at high familial risk for 
 ```{r nback_dprime_risk_anova_posthoc, echo=FALSE}
 emmeans(nback_dprime_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'fdr')
 emmeans(nback_dprime_mod, specs = pairwise ~ block, adjust = 'fdr')
+```
+
+\FloatBarrier
+\clearpage
+
+# Exploratory Analyses with Total Body Fat Percentage
+
+## Go-NoGo
+
+### Percent False Alarms
+
+\FloatBarrier
+
+```{r gng_fa_bfp_mod, echo=FALSE, results='asis'}
+kable(round(gng_fa_bfp_sum$coefficients, 3), "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms - Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+### Percent Hits
+
+```{r gng_hits_bfp_mod, echo=FALSE, results='asis'}
+kable(round(gng_hits_bfp_sum$coefficients, 3), "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits - Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+Correct responses to go stimuli did not differ by risk status, age, sex, or SES.
+
+\FloatBarrier
+
+### Go Reaction Time
+
+```{r gng_hits_rt_bfp_mod, echo=FALSE, results='asis'}
+kable(round(gng_rt_bfp_sum$coefficients, 3), "latex",  digits = 3, caption = 'Go-NoGo - Go Reaction Time', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+
+\FloatBarrier
+
+### d'
+
+```{r gng_dprime_bfp_mod, echo=FALSE, results='asis'}
+kable(round(gng_dprime_bfp_sum$coefficients, 3), "latex",  digits = 3, caption = "Go-NoGo - d'", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+
+\FloatBarrier
+\clearpage
+
+## Stop-Signal Task
+
+### Stop Signal Reaction Time
+
+
+#### Overall
+
+\FloatBarrier
+
+```{r sst_ssrt_bfp_mod, echo=FALSE, results='asis'}
+kable(round(sst_ssrt_bfp_sum$coefficients, 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+### Energy Density Trials
+
+\FloatBarrier
+
+```{r sst_ssrt_bfp_EDmod, echo=FALSE, results='asis'}
+kable(round(sst_ssrt_bfp_EDsum$coefficients), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - ED x Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+
+```{r sst_ssrt_bfp_EDmod_noint, echo=FALSE, results='asis'}
+kable(round(sst_ssrt_bfp_EDsum_noint$coefficients), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - ED + Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+### Portion Size Trials
+
+\FloatBarrier
+
+```{r sst_ssrt_bfp_PSmod, echo=FALSE, results='asis'}
+kable(round(sst_ssrt_bfp_PSsum$coefficients), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - PS x Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r sst_ssrt_bfp_PSmod_noint, echo=FALSE, results='asis'}
+kable(round(sst_ssrt_bfp_PSsum_noint$coefficients), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - PS + Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+\clearpage
+
+### Stop Signal Delay
+
+#### Overall
+
+\FloatBarrier
+
+```{r sst_ssd_bfp_mod, echo=FALSE, results='asis'}
+kable(round(sst_ssd_bfp_sum$coefficients), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\
+
+```{r sst_ssd_bfp_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+sst_ssd_bfp_plot
+```
+
+There was an effect of of body fat percentage such that higher body fat percentage was associated with shorter stop signal delays (worse). 
+
+\FloatBarrier
+\clearpage
+
+#### Energy Density Trials
+
+\FloatBarrier
+\clearpage
+
+```{r sst_ssd_bfp_EDmod, echo=FALSE, results='asis'}
+kable(round(sst_ssd_bfp_EDsum$coefficients), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage x ED', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+```{r sst_ssd_bfp_EDmod_noint, echo=FALSE, results='asis'}
+kable(round(sst_ssd_bfp_EDsum_noint$coefficients), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage + ED', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+ 
+\ 
+
+```{r sst_ssd_bfp_EDfig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+sst_ssd_bfp_EDplot
+```
+
+There was no interaction between energy density and body fat percentage. There was, however, an effect of energy density and an effect of body fat percentage. Children had shorter stop signal delays (worse) during high energy dense blocks compared to low energy density blocks. Higher body fat percentage was associated with shorter stop signal delays (worse). 
+
+```{r sst_ssd_bfp_EDmod_posthoc, echo=FALSE}
+emmeans(sst_ssd_bfp_EDmod_noint, pairwise ~ ED)
+test(emtrends(sst_ssd_bfp_EDmod_noint, ~ dxa_total_body_perc_fat, var = 'dxa_total_body_perc_fat'))
+```
+
+\FloatBarrier
+\clearpage
+
+#### Portion Size Trials
+
+\FloatBarrier
+
+```{r sst_ssd_bfp_PSmod, echo=FALSE, results='asis'}
+kable(round(sst_ssd_bfp_PSsum$coefficients), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage x PS', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r sst_ssd_bfp_PSmod_noint, echo=FALSE, results='asis'}
+kable(round(sst_ssd_bfp_PSsum_noInt$coefficients), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage + PS', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+ 
+\
+ 
+```{r sst_ssd_bfp_PSfig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+sst_ssd_bfp_PSplot
+```
+
+There was no interaction between portion size and body fat percentage. There was, however, an effect of portion size and an effect of body fat percentage. Children had longer stop signal delays (better) during blocks where 80% of stop trials were large portion compared to small portion. Higher body fat percentage was associated with shorter stop signal delays (worse). 
+
+```{r sst_ssd_bfp_PSmod_posthoc, echo=FALSE}
+emmeans(sst_ssd_bfp_PSmod_noInt, pairwise ~ PS)
+test(emtrends(sst_ssd_bfp_PSmod_noInt, ~ dxa_total_body_perc_fat, var = 'dxa_total_body_perc_fat'))
+```
+
+\FloatBarrier
+\clearpage
+
+## N-back
+
+### Ballanced Accuracy
+
+\FloatBarrier
+
+```{r nback_balacc_bfp_mod, echo=FALSE, results='asis'}
+kable(round(nback_balacc_bfp_sum$coefficients, 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+```{r nback_balacc_bfp_fig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
+nback_balacc_bfp_plot
+```
+
+Interaction between total body fat percentage and load shows that higher body fat percentages are associated with worse working memory at the highest load (2-back)
+
+```{r nback_balacc_bfp_mod_posthoc, echo=FALSE}
+emmeans(nback_balacc_bfp_mod, specs = pairwise ~ block)
+test(emtrends(nback_balacc_bfp_mod, ~ block:dxa_total_body_perc_fat, var = 'dxa_total_body_perc_fat'))
+```
+
+\FloatBarrier
+\clearpage
+
+### d'
+
+\FloatBarrier
+
+```{r nback_dprime_bfp_mod, echo=FALSE, results='asis'}
+kable(round(nback_dprime_bfp_sum$coefficients, 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Risk Status x Load', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
 \FloatBarrier
