@@ -157,6 +157,12 @@ covariates_dat <- merge(r01_demo[c(1:16, 337:338, 19:24)], r01_health[c(1, 106, 
 
 covariates_dat <- merge(covariates_dat, r01_qs_cps[c(1, 341:388, 392:398)], by = 'sub', all.x = TRUE, all.y = FALSE)
 
+covariates_dat$risk_status_mom <- droplevels(factor(covariates_dat$risk_status_mom))
+covariates_dat$ethnicity <- droplevels(factor(covariates_dat$ethnicity))
+covariates_dat$race <- droplevels(factor(covariates_dat$race))
+covariates_dat$mom_ed <- droplevels(factor(covariates_dat$mom_ed))
+covariates_dat$dad_ed <- droplevels(factor(covariates_dat$dad_ed))
+
 #### Go No-Go ####
 
 ## 1) Load Data ####

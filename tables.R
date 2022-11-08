@@ -25,7 +25,7 @@
 # source('setup.R')
 
 ## participant table
-partab_data <- covariates_dat[covariates_dat$risk_status_mom != 'Neither' & covariates_dat$bmi_screenout == 0, c(8, 12, 10, 14:18, 20, 26, 25, 27:28, 82)]
+partab_data <- covariates_dat[covariates_dat$risk_status_mom != 'Neither', c(8, 12, 10, 14:18, 20, 26, 25, 27:28, 82)]
 
 partab_data$risk_status_mom <- droplevels(partab_data$risk_status_mom)
 
