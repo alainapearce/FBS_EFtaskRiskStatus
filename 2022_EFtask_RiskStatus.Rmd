@@ -88,7 +88,7 @@ as_kable_extra(gngtab, caption = 'Go-NoGo Performance Summary', format = "latex"
 \FloatBarrier
 
 ```{r gng_fa_avnova_momrisk, echo=FALSE, results='asis'}
-kable(anova2dataframe(gng_fa_anova), "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms', booktabs=TRUE) %>%
+kable(round(gng_fa_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -107,8 +107,8 @@ There was a significant effect of familial obesity risk such that children with 
 
 ### Percent Hits
 
-```{r gng_hits_risk_anova, echo=FALSE, results='asis'}
-kable(anova2dataframe(gng_hits_anova), "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits', booktabs=TRUE) %>%
+```{r gng_hits_risk_mod, echo=FALSE, results='asis'}
+kable(round(gng_hits_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -118,8 +118,8 @@ Correct responses to go stimuli did not differ by risk status, age, sex, or SES.
 
 ### Go Reaction Time
 
-```{r gng_hits_rt_anova, echo=FALSE, results='asis'}
-kable(anova2dataframe(gng_rt_anova), "latex",  digits = 3, caption = 'Go-NoGo - Go Reaction Time', booktabs=TRUE) %>%
+```{r gng_hits_rt_mod, echo=FALSE, results='asis'}
+kable(round(gng_rt_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo - Go Reaction Time', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -129,8 +129,8 @@ Correct responses to go stimuli did not differ by risk status, sex, or SES. Howe
 
 ### d'
 
-```{r gng_dprime_risk_anova, echo=FALSE, results='asis'}
-kable(anova2dataframe(gng_dprime_anova), "latex",  digits = 3, caption = "Go-NoGo - d'", booktabs=TRUE) %>%
+```{r gng_dprime_risk_mod, echo=FALSE, results='asis'}
+kable(round(gng_dprime_sum$coefficients, digits = 3), "latex",  digits = 3, caption = "Go-NoGo - d'", booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -163,8 +163,8 @@ as_kable_extra(sstPS_tab, caption = 'Stop-Signal Task Performance Summary: Risk 
 
 \FloatBarrier
 
-```{r sst_ssrtdesign_anova, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssrtdesign_anova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - ED x PS', booktabs=TRUE) %>%
+```{r sst_ssrtdesign_mod, echo=FALSE, results='asis'}
+kable(round(sst_ssrtdesign_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - ED x PS', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -182,8 +182,8 @@ No effect of energy density, portion size, or interaction.
 
 \FloatBarrier
 
-```{r sst_ssrt_risk_anova, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssrt_anova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Risk Status', booktabs=TRUE) %>%
+```{r sst_ssrt_risk_mod, echo=FALSE, results='asis'}
+kable(round(sst_ssrt_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Risk Status', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -195,7 +195,7 @@ sst_ssrt_plot
 
 Across all trials, there was a significant effect of familial obesity risk on stop-signal reaction time (SSRT). SSRT was slower (worse) in children with high risk compared to those with low risk. Additionally, older children were showed faster SSRT. There was no association with sex or SES.
 
-```{r sst_ssrt_risk_anova_posthoc}
+```{r sst_ssrt_risk_mod_posthoc}
 emmeans(sst_ssrt_model, specs = pairwise ~ risk_status_mom)
 test(emtrends(sst_ssrt_model, ~age_yr, var = 'age_yr'))
 ```
@@ -207,8 +207,8 @@ test(emtrends(sst_ssrt_model, ~age_yr, var = 'age_yr'))
 
 \FloatBarrier
 
-```{r sst_ssrt_risk_EDanova, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssrt_EDanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - ED x Risk Status', booktabs=TRUE) %>%
+```{r sst_ssrt_risk_EDmod, echo=FALSE, results='asis'}
+kable(round(sst_ssrt_EDsum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - ED x Risk Status', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -220,8 +220,10 @@ sst_ssrtED_plot
 
 SSRT was slower (worse) in children with high risk compared to those with low risk. 
 
-```{r sst_ssrt_risk_EDanova_posthoc}
+```{r sst_ssrt_risk_EDmod_posthoc}
 emmeans(sst_ssrt_EDmodel, specs = pairwise ~ risk_status_mom)
+emmeans(sst_ssrt_EDmodel, specs = pairwise ~ ED)
+
 ```
 \FloatBarrier
 \clearpage
@@ -230,8 +232,8 @@ emmeans(sst_ssrt_EDmodel, specs = pairwise ~ risk_status_mom)
 
 \FloatBarrier
 
-```{r sst_ssrt_risk_PSanova, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssrt_PSanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - PS x Risk Status', booktabs=TRUE) %>%
+```{r sst_ssrt_risk_PSmod, echo=FALSE, results='asis'}
+kable(round(sst_ssrt_PSsum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - PS x Risk Status', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -243,8 +245,10 @@ sst_ssrtPS_plot
 
 SSRT was slower (worse) in children with high risk compared to those with low risk. 
 
-```{r sst_ssrt_risk_PSanova_posthoc}
+```{r sst_ssrt_risk_PSmod_posthoc}
 emmeans(sst_ssrt_PSmodel, specs = pairwise ~ risk_status_mom)
+emmeans(sst_ssrt_PSmodel, specs = pairwise ~ PS)
+
 ```
 \FloatBarrier
 \clearpage
@@ -255,8 +259,8 @@ emmeans(sst_ssrt_PSmodel, specs = pairwise ~ risk_status_mom)
 
 \FloatBarrier
 
-```{r sst_ssddesign_anova, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssddesign_anova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - ED x PS', booktabs=TRUE) %>%
+```{r sst_ssddesign_mod, echo=FALSE, results='asis'}
+kable(round(sst_ssddesign_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - ED x PS', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -268,7 +272,7 @@ sst_ssddesign_plot
 
 No effect of portion size or interaction. A trend for an effect of  energy density such that there was a lower SSD (worse) for high ED compared to low ED blocks. 
 
-```{r sst_ssddesign_anova_posthoc, echo=FALSE}
+```{r sst_ssddesign_mod_posthoc, echo=FALSE}
 emmeans(sstdesign_ssd_model, specs = pairwise ~ ED)
 ```
 
@@ -285,8 +289,8 @@ sst_ssddesignED_plot
 #### All Trials
 
 
-```{r sst_ssd_risk_anova, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssd_anova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Risk Status', booktabs=TRUE) %>%
+```{r sst_ssd_risk_mod, echo=FALSE, results='asis'}
+kable(round(sst_ssd_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Risk Status', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -298,7 +302,7 @@ sst_ssd_plot
 
 Main effect of risk status such that children at high risk have shorter stop signal delays (worse) than children at low risk. 
 
-```{r sst_ssd_risk_anova_posthoc, echo=FALSE}
+```{r sst_ssd_risk_mod_posthoc, echo=FALSE}
 emmeans(sst_ssd_model, specs = pairwise ~ risk_status_mom)
 ```
 
@@ -309,8 +313,8 @@ emmeans(sst_ssd_model, specs = pairwise ~ risk_status_mom)
 
 \FloatBarrier
 
-```{r sst_ssd_risk_EDanova, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssd_EDanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Risk Status x ED', booktabs=TRUE) %>%
+```{r sst_ssd_risk_EDmod, echo=FALSE, results='asis'}
+kable(round(sst_ssd_EDsum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Risk Status x ED', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -322,9 +326,9 @@ sst_ssdED_plot
 
 Main effect of risk status such that children at high risk have shorter stop signal delays (worse) than children at low risk. Boys also have shorter stop signal delays than girls.
 
-```{r sst_ssd_risk_EDanova_posthoc, echo=FALSE}
+```{r sst_ssd_risk_EDmod_posthoc, echo=FALSE}
 emmeans(sst_ssd_EDmodel, specs = pairwise ~ risk_status_mom)
-emmeans(sst_ssd_EDmodel, specs = pairwise ~ sex)
+emmeans(sst_ssd_EDmodel, specs = pairwise ~ ED)
 ```
 
 \FloatBarrier
@@ -334,8 +338,8 @@ emmeans(sst_ssd_EDmodel, specs = pairwise ~ sex)
 
 \FloatBarrier
 
-```{r sst_ssd_risk_PSanova, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssd_PSanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Risk Status x PS', booktabs=TRUE) %>%
+```{r sst_ssd_risk_PSmod, echo=FALSE, results='asis'}
+kable(round(sst_ssd_PSsum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Risk Status x PS', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -347,7 +351,7 @@ sst_ssdPS_plot
 
 Main effect of risk status such that children at high risk have shorter stop signal delays (worse) than children at low risk. Boys also have shorter stop signal delays than girls.
 
-```{r sst_ssd_risk_PSanova_posthoc, echo=FALSE}
+```{r sst_ssd_risk_PSmod_posthoc, echo=FALSE}
 emmeans(sst_ssd_PSmodel, specs = pairwise ~ risk_status_mom)
 emmeans(sst_ssd_PSmodel, specs = pairwise ~ PS)
 emmeans(sst_ssd_PSmodel, specs = pairwise ~ sex)
@@ -358,8 +362,9 @@ emmeans(sst_ssd_PSmodel, specs = pairwise ~ sex)
 
 ## N-back
 
-```{r nback_balacc_risk_anova, echo=FALSE, results='asis'}
-as_kable_extra(nbacktab_all, "latex",  digits = 3, caption = 'Nback Balanced Performance Summary', booktabs=TRUE) %>% kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```{r nback_risk_tab, echo=FALSE, results='asis'}
+as_kable_extra(nbacktab_all, caption = 'Nback Performance Summary',  format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "HOLD_position",  full_width = FALSE)
 ```
 \
 \FloatBarrier
@@ -369,8 +374,8 @@ as_kable_extra(nbacktab_all, "latex",  digits = 3, caption = 'Nback Balanced Per
 
 \FloatBarrier
 
-```{r nback_balacc_risk_anova, echo=FALSE, results='asis'}
-kable(anova2dataframe(nback_balacc_anova), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Risk Status x Load', booktabs=TRUE) %>%
+```{r nback_balacc_risk_mod, echo=FALSE, results='asis'}
+kable(round(nback_balacc_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Risk Status x Load', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -380,9 +385,11 @@ nback_balacc_plot
 
 Interaction between risk and load shows that children at high familial risk for obesity perform worse at the highest working memory load compared to children at low risk.
 
-```{r nback_balacc_risk_anova_posthoc, echo=FALSE}
-emmeans(nback_balacc_mod, specs = pairwise ~ block, adjust = 'fdr')
-emmeans(nback_balacc_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'fdr')
+```{r nback_balacc_risk_mod_posthoc, echo=FALSE}
+emmeans(nback_balacc_mod, specs = pairwise ~ block, adjust = 'none')
+emmeans(nback_balacc_mod, specs = pairwise ~ risk_status_mom, adjust = 'none')
+
+emmeans(nback_balacc_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'none')
 ```
 
 \FloatBarrier
@@ -392,8 +399,8 @@ emmeans(nback_balacc_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'fd
 
 \FloatBarrier
 
-```{r nback_dprime_risk_anova, echo=FALSE, results='asis'}
-kable(anova2dataframe(nback_dprime_anova), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Risk Status x Load', booktabs=TRUE) %>%
+```{r nback_dprime_risk_mod, echo=FALSE, results='asis'}
+kable(round(nback_dprime_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Risk Status x Load', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -403,9 +410,9 @@ nback_drime_plot
 
 Interaction between risk and load shows that children at high familial risk for obesity perform worse at the highest working memory load compared to children at low risk.
 
-```{r nback_dprime_risk_anova_posthoc, echo=FALSE}
-emmeans(nback_dprime_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'fdr')
-emmeans(nback_dprime_mod, specs = pairwise ~ block, adjust = 'fdr')
+```{r nback_dprime_risk_mod_posthoc, echo=FALSE}
+emmeans(nback_dprime_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'none')
+emmeans(nback_dprime_mod, specs = pairwise ~ block, adjust = 'none')
 ```
 
 \FloatBarrier
@@ -420,7 +427,7 @@ emmeans(nback_dprime_mod, specs = pairwise ~ block, adjust = 'fdr')
 \FloatBarrier
 
 ```{r gng_fa_bfp_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(gng_fa_bfp_anova), "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms - Body Fat Percentage', booktabs=TRUE) %>%
+kable(round(gng_fa_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms - Body Fat Percentage', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -429,7 +436,7 @@ kable(anova2dataframe(gng_fa_bfp_anova), "latex",  digits = 3, caption = 'Go-NoG
 ### Percent Hits
 
 ```{r gng_hits_bfp_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(gng_hits_bfp_anova), "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits - Body Fat Percentage', booktabs=TRUE) %>%
+kable(round(gng_hits_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits - Body Fat Percentage', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -440,7 +447,7 @@ Correct responses to go stimuli did not differ by risk status, age, sex, or SES.
 ### Go Reaction Time
 
 ```{r gng_hits_rt_bfp_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(gng_rt_bfp_anova), "latex",  digits = 3, caption = 'Go-NoGo - Go Reaction Time', booktabs=TRUE) %>%
+kable(round(gng_rt_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo - Go Reaction Time', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -450,7 +457,7 @@ kable(anova2dataframe(gng_rt_bfp_anova), "latex",  digits = 3, caption = 'Go-NoG
 ### d'
 
 ```{r gng_dprime_bfp_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(gng_dprime_bfp_anova), "latex",  digits = 3, caption = "Go-NoGo - d'", booktabs=TRUE) %>%
+kable(round(gng_dprime_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, caption = "Go-NoGo - d'", booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -468,7 +475,7 @@ kable(anova2dataframe(gng_dprime_bfp_anova), "latex",  digits = 3, caption = "Go
 \FloatBarrier
 
 ```{r sst_ssrt_bfp_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssrt_bfp_anova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Body Fat Percentage', booktabs=TRUE) %>%
+kable(round(sst_ssrt_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Body Fat Percentage', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -479,8 +486,13 @@ kable(anova2dataframe(sst_ssrt_bfp_anova), "latex",  digits = 3, caption = 'Stop
 \FloatBarrier
 
 ```{r sst_ssrt_bfp_EDmod, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssrt_bfp_EDanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - ED x Body Fat Percentage', booktabs=TRUE) %>%
+kable(round(sst_ssrt_bfp_EDsum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - ED x Body Fat Percentage', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+\
+```{r sst_ssrt_bfp_EDmod_posthoc, echo=FALSE}
+test(emtrends(sst_ssrt_bfp_EDmod, ~ bfp_center, var = 'bfp_center'))
+emmeans(sst_ssrt_bfp_EDmod, specs = pairwise ~ ED)
 ```
 
 \FloatBarrier
@@ -490,10 +502,14 @@ kable(anova2dataframe(sst_ssrt_bfp_EDanova), "latex",  digits = 3, caption = 'St
 \FloatBarrier
 
 ```{r sst_ssrt_bfp_PSmod, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssrt_bfp_PSanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - PS x Body Fat Percentage', booktabs=TRUE) %>%
+kable(round(sst_ssrt_bfp_PSsum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - PS x Body Fat Percentage', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
-
+\
+```{r sst_ssrt_bfp_PSmod_posthoc, echo=FALSE}
+test(emtrends(sst_ssrt_bfp_PSmod, ~ bfp_center, var = 'bfp_center'))
+emmeans(sst_ssrt_bfp_PSmod, specs = pairwise ~ PS)
+```
 \FloatBarrier
 \clearpage
 
@@ -504,7 +520,7 @@ kable(anova2dataframe(sst_ssrt_bfp_PSanova), "latex",  digits = 3, caption = 'St
 \FloatBarrier
 
 ```{r sst_ssd_bfp_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssd_bfp_anova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage', booktabs=TRUE) %>%
+kable(round(sst_ssd_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -525,11 +541,15 @@ There was an effect of of body fat percentage such that higher body fat percenta
 \clearpage
 
 ```{r sst_ssd_bfp_EDmod, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssd_bfp_EDanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage x ED', booktabs=TRUE) %>%
+kable(round(sst_ssd_bfp_EDsum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage x ED', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
-
-\ 
+\
+```{r sst_ssd_bfp_EDmod_posthoc, echo=FALSE}
+test(emtrends(sst_ssd_bfp_EDmod, ~ bfp_center, var = 'bfp_center'))
+emmeans(sst_ssd_bfp_EDmod, specs = pairwise ~ ED)
+```
+\FloatBarrier
 
 ```{r sst_ssd_bfp_EDfig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
 sst_ssd_bfp_EDplot
@@ -546,17 +566,16 @@ There was no interaction between energy density and body fat percentage. There w
 \FloatBarrier
 
 ```{r sst_ssd_bfp_PSmod, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssd_bfp_PSanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage x PS', booktabs=TRUE) %>%
+kable(round(sst_ssd_bfp_PSsum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage x PS', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+\
+```{r sst_ssd_bfp_PSmod_posthoc, echo=FALSE}
+test(emtrends(sst_ssd_bfp_PSmod, ~ bfp_center, var = 'bfp_center'))
+emmeans(sst_ssd_bfp_PSmod, specs = pairwise ~ PS)
 ```
 
 \FloatBarrier
-
-```{r sst_ssd_bfp_PSmod_noint, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssd_bfp_PSanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage + PS', booktabs=TRUE) %>%
-  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
-```
- 
 \
  
 ```{r sst_ssd_bfp_PSfig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
@@ -575,7 +594,7 @@ There was no interaction between portion size and body fat percentage. There was
 \FloatBarrier
 
 ```{r nback_balacc_bfp_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(nback_balacc_bfp_anova), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
+kable(round(nback_balacc_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -587,7 +606,7 @@ Interaction between total body fat percentage and load shows that higher body fa
 
 ```{r nback_balacc_bfp_mod_posthoc, echo=FALSE}
 emmeans(nback_balacc_bfp_mod, specs = pairwise ~ block)
-test(emtrends(nback_balacc_bfp_mod, ~ block:dxa_total_body_perc_fat, var = 'dxa_total_body_perc_fat'))
+test(emtrends(nback_balacc_bfp_mod, ~ block:bfp_center, var = 'bfp_center'))
 ```
 
 \FloatBarrier
@@ -598,10 +617,14 @@ test(emtrends(nback_balacc_bfp_mod, ~ block:dxa_total_body_perc_fat, var = 'dxa_
 \FloatBarrier
 
 ```{r nback_dprime_bfp_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(nback_dprime_bfp_anova), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
+kable(round(nback_dprime_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
-
+\
+```{r nback_dprime_bfp_mod_posthoc, echo=FALSE}
+emmeans(nback_dprime_bfp_mod, specs = pairwise ~ block)
+test(emtrends(nback_dprime_bfp_mod, ~ bfp_center, var = 'bfp_center'))
+```
 \FloatBarrier
 \clearpage
 
@@ -614,7 +637,7 @@ kable(anova2dataframe(nback_dprime_bfp_anova), "latex",  digits = 3, caption = '
 \FloatBarrier
 
 ```{r gng_fa_bfp_risk_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(gng_fa_bfp_risk_anova), "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms - Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
+kable(round(gng_fa_bfp_risk_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms - Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -631,7 +654,7 @@ kable(anova2dataframe(gng_fa_bfp_risk_anova), "latex",  digits = 3, caption = 'G
 \FloatBarrier
 
 ```{r sst_ssrt_bfp_risk_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssrt_bfp_risk_anova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
+kable(round(sst_ssrt_bfp_risk_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -642,7 +665,7 @@ kable(anova2dataframe(sst_ssrt_bfp_risk_anova), "latex",  digits = 3, caption = 
 \FloatBarrier
 
 ```{r sst_ssrt_bfp_risk_EDmod, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssrt_bfp_risk_EDanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - ED  + Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
+kable(round(sst_ssrt_bfp_risk_EDsum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - ED  + Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -653,7 +676,7 @@ kable(anova2dataframe(sst_ssrt_bfp_risk_EDanova), "latex",  digits = 3, caption 
 \FloatBarrier
 
 ```{r sst_ssrt_bfp_risk_PSmod, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssrt_bfp_risk_PSanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - PS + Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
+kable(round(sst_ssrt_bfp_risk_PSsum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - PS + Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -667,7 +690,7 @@ kable(anova2dataframe(sst_ssrt_bfp_risk_PSanova), "latex",  digits = 3, caption 
 \FloatBarrier
 
 ```{r sst_ssd_bfp_risk_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssd_bfp_risk_anova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
+kable(round(sst_ssd_bfp_risk_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -680,7 +703,7 @@ kable(anova2dataframe(sst_ssd_bfp_risk_anova), "latex",  digits = 3, caption = '
 \clearpage
 
 ```{r sst_ssd_bfp_risk_EDmod, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssd_bfp_risk_EDanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - ED + Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
+kable(round(sst_ssd_bfp_risk_EDsum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - ED + Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -690,7 +713,7 @@ kable(anova2dataframe(sst_ssd_bfp_risk_EDanova), "latex",  digits = 3, caption =
 \FloatBarrier
 
 ```{r sst_ssd_bfp_risk_PSmod, echo=FALSE, results='asis'}
-kable(anova2dataframe(sst_ssd_bfp_risk_PSanova), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - PS + Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
+kable(round(sst_ssd_bfp_risk_PSsum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - PS + Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -704,10 +727,16 @@ kable(anova2dataframe(sst_ssd_bfp_risk_PSanova), "latex",  digits = 3, caption =
 \FloatBarrier
 
 ```{r nback_balacc_bfp_risk_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(nback_balacc_bfp_risk_anova), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load + Risk Status x Load', booktabs=TRUE) %>%
+kable(round(nback_balacc_bfp_risk_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load + Risk Status x Load', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
+\
 
+```{r nback_balacc_bfp_risk_mod_posthoc, echo=FALSE}
+emmeans(nback_balacc_bfp_risk_mod, specs = pairwise ~ risk_status_mom, adjust = 'none')
+emmeans(nback_balacc_bfp_risk_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'none')
+test(emtrends(nback_balacc_bfp_risk_mod, ~ bfp_center, var = 'bfp_center'))
+```
 \FloatBarrier
 
 ### d'
@@ -715,9 +744,14 @@ kable(anova2dataframe(nback_balacc_bfp_risk_anova), "latex",  digits = 3, captio
 \FloatBarrier
 
 ```{r nback_dprime_bfp_risk_mod, echo=FALSE, results='asis'}
-kable(anova2dataframe(nback_dprime_bfp_risk_anova), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load + Risk Status x Load', booktabs=TRUE) %>%
+kable(round(nback_dprime_bfp_risk_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load + Risk Status x Load', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
-
+\
+```{r nback_dprime_bfp_risk_mod_posthoc, echo=FALSE}
+emmeans(nback_dprime_bfp_risk_mod, specs = pairwise ~ risk_status_mom, adjust = 'none')
+emmeans(nback_dprime_bfp_risk_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'none')
+test(emtrends(nback_dprime_bfp_risk_mod, ~ bfp_center, var = 'bfp_center'))
+```
 \FloatBarrier
 \clearpage

@@ -36,7 +36,7 @@ partab_risk <-
     value = list(age_yr ~ "Age, yr", sex ~ "Sex", ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income", mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education", bmi_percentile ~ "BMI %tile", dxa_total_body_perc_fat ~ 'Total Body Fat %', dxa_total_fat_mass ~ 'Total Fat Mass', dxa_est_vat_mass ~ 'Visceral Fat Mass', dxa_total_lean_mass ~ 'Lean Fat Mass', wasi_fsiq2 ~ 'IQ'),
     label = list(age_yr ~ "Age, yr", sex ~ "Sex", ethnicity ~ "Ethnicity", race ~ "Race", income ~ "Income", mom_ed ~ "Mother's Education", dad_ed ~ "Father's Education", bmi_percentile ~ "BMI %tile", dxa_total_body_perc_fat ~ 'Total Body Fat %', dxa_total_fat_mass ~ 'Total Fat Mass', dxa_est_vat_mass ~ 'Visceral Fat Mass', dxa_total_lean_mass ~ 'Lean Fat Mass', wasi_fsiq2 ~ 'IQ'),
     type = list(age_yr ~ "continuous", sex ~ "categorical", ethnicity ~ "categorical", race ~ "categorical", income ~ "categorical", mom_ed ~ "categorical", dad_ed ~ "categorical", bmi_percentile ~ "continuous", dxa_total_body_perc_fat ~ 'continuous', dxa_total_fat_mass ~ 'continuous', dxa_est_vat_mass ~ 'continuous', dxa_total_lean_mass ~ 'continuous', wasi_fsiq2 ~ 'continuous'),
-    statistic = all_continuous() ~ c("{mean} [{min} - {max}]"),
+    statistic = all_continuous() ~ c("{mean} ({sd})"),
     missing = "ifany",
     digits = all_continuous() ~ 1) %>%
 add_p(test = all_continuous() ~ "t.test") %>%
@@ -102,6 +102,19 @@ nbacktab_all <-
   )
 
 ## SST table
+sst_all <- r01_sst_cond[c(8, 84, 87, 90, 92, 95:97)]
+
+sst_all_tab <-
+  tbl_summary(
+    data = sst_all,
+    by = risk_status_mom,
+    value = list(all_racehorse_check ~ 'race horse', all_go_rt ~ "Go RT, ms", all_n_go_error ~ "L/R Response Error, N", all_n_go_miss ~ "Misses, N", all_ssd ~ "SSD, ms", all_ssrt_mean ~ "SSRT - Mean Method, ms", all_ssrt_int ~ "SSRT - Integration Method, ms"),
+    label = list(all_racehorse_check ~ 'race horse', all_go_rt ~ "Go RT, ms", all_n_go_error ~ "L/R Response Error, N", all_n_go_miss ~ "Misses, N", all_ssd ~ "SSD, ms", all_ssrt_mean ~ "SSRT - Mean Method, ms", all_ssrt_int ~ "SSRT - Integration Method, ms"),
+    type = list(all_racehorse_check ~ 'categorical', all_go_rt ~ "continuous", all_n_go_error ~ "continuous", all_n_go_miss ~ "continuous", all_ssd ~ "continuous", all_ssrt_mean ~ "continuous", all_ssrt_int ~ "continuous"),
+    statistic = all_continuous() ~ c("{mean} ({sd})"),
+    missing = "no",
+    digits = all_continuous() ~ 1)
+
 sstEDlow_data <- r01_sst_EDlong[r01_sst_EDlong$ED == "Low ED", c(8, 86:88, 90:92)]
 sstEDhigh_data <- r01_sst_EDlong[r01_sst_EDlong$ED == "High ED", c(8, 86:88, 90:92)]
 
