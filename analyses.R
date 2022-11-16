@@ -26,6 +26,22 @@
 # source('setup.R')
 # source('functions.R')
 
+## Demo ###
+covar_demo <- covariates_dat[covariates_dat$risk_status_mom != 'Neither', ]
+covar_demo$risk_status_mom <- droplevels(covar_demo$risk_status_mom)
+
+## income
+income_chi <- chisq.test(xtabs(~risk_status_mom + income, data = covar_demo))
+
+## maternal ed
+momed_fisher <- fisher.test(xtabs(~risk_status_mom + mom_ed, data = covar_demo))
+
+## bmi percentile
+bmi_t <- t.test(bmi_percentile ~ risk_status_mom, data = covar_demo)
+
+## bmi percentile
+pbf_t <- t.test(dxa_total_body_perc_fat ~ risk_status_mom, data = covar_demo)
+
 ## Go-NoGo  - Risk ####
 # False Alarms
 gng_fa_model <- lm(all_p_nogo_fa ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_gng)

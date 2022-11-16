@@ -71,6 +71,27 @@ source('figures.R')
 \FloatBarrier
 \clearpage
 
+## income
+```{r demo_incom, echo=FALSE}
+income_chi
+```
+
+## mom education
+```{r demo_momed, echo=FALSE}
+momed_fisher
+```
+
+## bmi percentile
+```{r demo_bmi, echo=FALSE}
+bmi_t
+```
+
+## percent body fat
+```{r demo_pbf, echo=FALSE}
+pbf_t
+```
+
+
 # Effect of Risk Status
 
 ## Go-NoGo
@@ -140,6 +161,14 @@ Sensitivity indexed by d' did not differ by risk status, age, sex, or SES.
 \clearpage
 
 ## Stop-Signal Task
+
+```{r sst_tab, echo=FALSE, results='asis'}
+as_kable_extra(sst_all_tab, caption = 'Stop-Signal Task Performance Summary: Risk Status across all trials', format = "latex", booktabs = TRUE, longtable = FALSE) %>%
+  kableExtra::kable_styling(latex_options = "HOLD_position",  full_width = FALSE)
+```
+\
+\FloatBarrier
+
 
 ```{r sstED_tab, echo=FALSE, results='asis'}
 as_kable_extra(sstED_tab, caption = 'Stop-Signal Task Performance Summary: Risk Status by Energy Density Condition', format = "latex", booktabs = TRUE, longtable = FALSE) %>%

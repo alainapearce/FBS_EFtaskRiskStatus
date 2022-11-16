@@ -32,7 +32,7 @@ r01_demo <- as.data.frame(read_spss(("data/demographics_data.sav")))
 names(r01_demo)[1] <- 'sub'
 
 #remove 2 that were removed for ADHD
-r01_demo = r01_demo[r01_demo$sub != 31 & r01_demo$sub != 34, ]
+r01_demo = r01_demo[r01_demo$sub != 31 & r01_demo$sub != 34 & r01_demo$sub != 134, ]
 
 ## 2) Get Variable Labels and Re-Level ####
 
