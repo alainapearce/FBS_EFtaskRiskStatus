@@ -145,6 +145,9 @@ r01_nback$bfp_center <- r01_nback$dxa_total_body_perc_fat - mean(r01_nback$dxa_t
 gng_fa_bfp_mod <- lm(all_p_nogo_fa ~ mom_ed + income + sex + age_yr + dxa_total_body_perc_fat, data = r01_gng)
 gng_fa_bfp_sum <- summary(gng_fa_bfp_mod)
 
+r01_gng_ses$fa_bfp_pred <- predict(gng_fa_bfp_mod, type = 'response')
+
+
 # hits
 gng_hits_bfp_mod <- lm(all_p_go_hit ~ mom_ed + income + sex + age_yr + dxa_total_body_perc_fat, data = r01_gng)
 gng_hits_bfp_sum <- summary(gng_hits_bfp_mod)
@@ -163,6 +166,8 @@ gng_dprime_bfp_sum <- summary(gng_dprime_bfp_mod)
 sst_ssrt_bfp_mod <- lm(all_ssrt_int ~ mom_ed + income + sex + age_yr + dxa_total_body_perc_fat, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
 sst_ssrt_bfp_sum <- summary(sst_ssrt_bfp_mod)
 
+r01_sst_all_ses$ssrt_bfp_pred <- predict(sst_ssrt_bfp_mod, type = 'response')
+
 # SSRT - ED condition
 sst_ssrt_bfp_EDmod <- lmer(ssrt_int ~ mom_ed + income + sex + age_yr + ED*bfp_center + (1|sub), data = r01_sst_EDlong)
 sst_ssrt_bfp_EDsum <- summary(sst_ssrt_bfp_EDmod)
@@ -176,8 +181,7 @@ sst_ssrt_bfp_PSsum<- summary(sst_ssrt_bfp_PSmod)
 sst_ssd_bfp_mod <- lm(all_ssd ~ mom_ed + income + sex + age_yr + dxa_total_body_perc_fat, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
 sst_ssd_bfp_sum <- summary(sst_ssd_bfp_mod)
 
-r01_sst_bfp_ses <- r01_sst_cond[!is.na(r01_sst_cond$income) & !is.na(r01_sst_cond$mom_ed) & r01_sst_cond$all_racehorse_check == 1 & !is.na(r01_sst_cond$dxa_total_body_perc_fat), ]
-r01_sst_bfp_ses$ssd_pred <- predict(sst_ssd_bfp_mod, type = 'response')
+r01_sst_all_ses$ssd_bfp_pred <- predict(sst_ssd_bfp_mod, type = 'response')
 
 
 # SSD - ED condition
@@ -201,12 +205,14 @@ r01_sst_bfp_PS_ses$ssd_pred <- predict(sst_ssd_bfp_PSmod, type = 'response')
 nback_balacc_bfp_mod <- lmer(p_target_ba ~ mom_ed + income + sex + age_yr + block*bfp_center + (1|sub), data = r01_nback[r01_nback$ses == 1, ])
 nback_balacc_bfp_sum <- summary(nback_balacc_bfp_mod)
 
-r01_nback_bfp_ses <- r01_nback[!is.na(r01_nback$income) & !is.na(r01_nback$mom_ed) & r01_nback$ses == 1 & !is.na(r01_nback$dxa_total_body_perc_fat), ]
-r01_nback_bfp_ses$balacc_pred <- predict(nback_balacc_bfp_mod, type = 'response')
+r01_nback_ses$balacc_bfp_pred <- predict(nback_balacc_bfp_mod, type = 'response')
 
 # d'
 nback_dprime_bfp_mod <- lmer(dprime ~ mom_ed + income + sex + age_yr + block*bfp_center + (1|sub), data = r01_nback[r01_nback$ses == 1, ])
 nback_dprime_bfp_sum <- summary(nback_dprime_bfp_mod)
+
+r01_nback_ses$dprime_bfp_pred <- predict(nback_dprime_bfp_mod, type = 'response')
+
 
 # Exploratory - relative impact of risk and BFP ####
 
@@ -221,7 +227,7 @@ gng_fa_bfp_risk_sum <- summary(gng_fa_bfp_risk_mod)
 sst_ssrt_bfp_risk_mod <- lm(all_ssrt_int ~ mom_ed + income + sex + age_yr + dxa_total_body_perc_fat + risk_status_mom, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
 sst_ssrt_bfp_risk_sum <- summary(sst_ssrt_bfp_risk_mod)
 
-r01_sst_bfp_ses$ssrt_pred_both <- predict(sst_ssrt_bfp_risk_mod, type = 'response')
+r01_sst_all_ses$ssrt_pred_both <- predict(sst_ssrt_bfp_risk_mod, type = 'response')
 
 # SSRT - ED condition
 sst_ssrt_bfp_risk_EDmod <- lmer(ssrt_int ~ mom_ed + income + sex + age_yr + ED + bfp_center + risk_status_mom + (1|sub), data = r01_sst_EDlong)
@@ -236,7 +242,7 @@ sst_ssrt_bfp_risk_PSsum<- summary(sst_ssrt_bfp_risk_PSmod)
 sst_ssd_bfp_risk_mod <- lm(all_ssd ~ mom_ed + income + sex + age_yr + dxa_total_body_perc_fat + risk_status_mom, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
 sst_ssd_bfp_risk_sum <- summary(sst_ssd_bfp_risk_mod)
 
-r01_sst_bfp_ses$ssd_pred_both <- predict(sst_ssd_bfp_risk_mod, type = 'response')
+r01_sst_all_ses$ssd_pred_both <- predict(sst_ssd_bfp_risk_mod, type = 'response')
 
 
 # SSD - ED condition
@@ -257,10 +263,10 @@ r01_sst_bfp_PS_ses$ssd_pred_both <- predict(sst_ssd_bfp_PSmod, type = 'response'
 nback_balacc_bfp_risk_mod <- lmer(p_target_ba ~ mom_ed + income + sex + age_yr + block*risk_status_mom + block*bfp_center + (1|sub), data = r01_nback[r01_nback$ses == 1, ])
 nback_balacc_bfp_risk_sum <- summary(nback_balacc_bfp_risk_mod)
 
-r01_nback_bfp_ses$balacc_pred_both <- predict(nback_balacc_bfp_risk_mod, type = 'response')
+r01_nback_ses$balacc_pred_both <- predict(nback_balacc_bfp_risk_mod, type = 'response')
 
 # d'
 nback_dprime_bfp_risk_mod <- lmer(dprime ~ mom_ed + income + sex + age_yr + block*risk_status_mom + block*bfp_center + (1|sub), data = r01_nback[r01_nback$ses == 1, ])
 nback_dprime_bfp_risk_sum <- summary(nback_dprime_bfp_risk_mod)
 
-r01_nback_bfp_ses$dprime_pred_both <- predict(nback_dprime_bfp_risk_mod, type = 'response')
+r01_nback_ses$dprime_pred_both <- predict(nback_dprime_bfp_risk_mod, type = 'response')

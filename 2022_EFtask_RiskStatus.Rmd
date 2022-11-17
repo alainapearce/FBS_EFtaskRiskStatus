@@ -121,7 +121,6 @@ gng_fa_plot
 
 \FloatBarrier
 
-There was a significant effect of familial obesity risk such that children with high risk had a false alarm percentage that was 7.8 points higher than those with low risk. SES, age, and sex were not associated with false alarm percentage.
 
 \FloatBarrier
 \clearpage
@@ -133,7 +132,6 @@ kable(round(gng_hits_sum$coefficients, digits = 3), "latex",  digits = 3, captio
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
-Correct responses to go stimuli did not differ by risk status, age, sex, or SES.
 
 \FloatBarrier
 
@@ -144,7 +142,6 @@ kable(round(gng_rt_sum$coefficients, digits = 3), "latex",  digits = 3, caption 
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
-Correct responses to go stimuli did not differ by risk status, sex, or SES. However, older children responded more quickly than younger children.
 
 \FloatBarrier
 
@@ -155,7 +152,6 @@ kable(round(gng_dprime_sum$coefficients, digits = 3), "latex",  digits = 3, capt
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
-Sensitivity indexed by d' did not differ by risk status, age, sex, or SES.
 
 \FloatBarrier
 \clearpage
@@ -203,7 +199,6 @@ kable(round(sst_ssrtdesign_sum$coefficients, digits = 3), "latex",  digits = 3, 
 sst_ssrtdesign_plot
 ```
 
-No effect of energy density, portion size, or interaction.
 
 \clearpage
 
@@ -222,7 +217,6 @@ kable(round(sst_ssrt_sum$coefficients, digits = 3), "latex",  digits = 3, captio
 sst_ssrt_plot
 ```
 
-Across all trials, there was a significant effect of familial obesity risk on stop-signal reaction time (SSRT). SSRT was slower (worse) in children with high risk compared to those with low risk. Additionally, older children were showed faster SSRT. There was no association with sex or SES.
 
 ```{r sst_ssrt_risk_mod_posthoc}
 emmeans(sst_ssrt_model, specs = pairwise ~ risk_status_mom)
@@ -247,7 +241,6 @@ kable(round(sst_ssrt_EDsum$coefficients, digits = 3), "latex",  digits = 3, capt
 sst_ssrtED_plot
 ```
 
-SSRT was slower (worse) in children with high risk compared to those with low risk. 
 
 ```{r sst_ssrt_risk_EDmod_posthoc}
 emmeans(sst_ssrt_EDmodel, specs = pairwise ~ risk_status_mom)
@@ -272,7 +265,6 @@ kable(round(sst_ssrt_PSsum$coefficients, digits = 3), "latex",  digits = 3, capt
 sst_ssrtPS_plot
 ```
 
-SSRT was slower (worse) in children with high risk compared to those with low risk. 
 
 ```{r sst_ssrt_risk_PSmod_posthoc}
 emmeans(sst_ssrt_PSmodel, specs = pairwise ~ risk_status_mom)
@@ -299,7 +291,6 @@ kable(round(sst_ssddesign_sum$coefficients, digits = 3), "latex",  digits = 3, c
 sst_ssddesign_plot
 ```
 
-No effect of portion size or interaction. A trend for an effect of  energy density such that there was a lower SSD (worse) for high ED compared to low ED blocks. 
 
 ```{r sst_ssddesign_mod_posthoc, echo=FALSE}
 emmeans(sstdesign_ssd_model, specs = pairwise ~ ED)
@@ -329,7 +320,6 @@ kable(round(sst_ssd_sum$coefficients, digits = 3), "latex",  digits = 3, caption
 sst_ssd_plot
 ```
 
-Main effect of risk status such that children at high risk have shorter stop signal delays (worse) than children at low risk. 
 
 ```{r sst_ssd_risk_mod_posthoc, echo=FALSE}
 emmeans(sst_ssd_model, specs = pairwise ~ risk_status_mom)
@@ -353,7 +343,6 @@ kable(round(sst_ssd_EDsum$coefficients, digits = 3), "latex",  digits = 3, capti
 sst_ssdED_plot
 ```
 
-Main effect of risk status such that children at high risk have shorter stop signal delays (worse) than children at low risk. Boys also have shorter stop signal delays than girls.
 
 ```{r sst_ssd_risk_EDmod_posthoc, echo=FALSE}
 emmeans(sst_ssd_EDmodel, specs = pairwise ~ risk_status_mom)
@@ -378,7 +367,6 @@ kable(round(sst_ssd_PSsum$coefficients, digits = 3), "latex",  digits = 3, capti
 sst_ssdPS_plot
 ```
 
-Main effect of risk status such that children at high risk have shorter stop signal delays (worse) than children at low risk. Boys also have shorter stop signal delays than girls.
 
 ```{r sst_ssd_risk_PSmod_posthoc, echo=FALSE}
 emmeans(sst_ssd_PSmodel, specs = pairwise ~ risk_status_mom)
@@ -412,7 +400,6 @@ kable(round(nback_balacc_sum$coefficients, digits = 3), "latex",  digits = 3, ca
 nback_balacc_plot
 ```
 
-Interaction between risk and load shows that children at high familial risk for obesity perform worse at the highest working memory load compared to children at low risk.
 
 ```{r nback_balacc_risk_mod_posthoc, echo=FALSE}
 emmeans(nback_balacc_mod, specs = pairwise ~ block, adjust = 'none')
@@ -437,7 +424,6 @@ kable(round(nback_dprime_sum$coefficients, digits = 3), "latex",  digits = 3, ca
 nback_drime_plot
 ```
 
-Interaction between risk and load shows that children at high familial risk for obesity perform worse at the highest working memory load compared to children at low risk.
 
 ```{r nback_dprime_risk_mod_posthoc, echo=FALSE}
 emmeans(nback_dprime_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'none')
@@ -460,6 +446,15 @@ kable(round(gng_fa_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, capt
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
+
+\
+
+```{r gng_fa_bfp_plot, echo=FALSE, include = TRUE, fig.height = 4, fig.width = 4}
+gng_fa_bfp_plot
+```
+
+\FloatBarrier
+
 \FloatBarrier
 
 ### Percent Hits
@@ -469,7 +464,6 @@ kable(round(gng_hits_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, ca
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
-Correct responses to go stimuli did not differ by risk status, age, sex, or SES.
 
 \FloatBarrier
 
@@ -506,6 +500,11 @@ kable(round(gng_dprime_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, 
 ```{r sst_ssrt_bfp_mod, echo=FALSE, results='asis'}
 kable(round(sst_ssrt_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Body Fat Percentage', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+\
+
+```{r sst_ssrt_bfp_plot, echo=FALSE, include = TRUE, fig.height = 4, fig.width = 4}
+sst_ssrt_bfp_plot
 ```
 
 \FloatBarrier
@@ -559,7 +558,6 @@ kable(round(sst_ssd_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, cap
 sst_ssd_bfp_plot
 ```
 
-There was an effect of of body fat percentage such that higher body fat percentage was associated with shorter stop signal delays (worse). 
 
 \FloatBarrier
 \clearpage
@@ -579,15 +577,6 @@ test(emtrends(sst_ssd_bfp_EDmod, ~ bfp_center, var = 'bfp_center'))
 emmeans(sst_ssd_bfp_EDmod, specs = pairwise ~ ED)
 ```
 \FloatBarrier
-
-```{r sst_ssd_bfp_EDfig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
-sst_ssd_bfp_EDplot
-```
-
-There was no interaction between energy density and body fat percentage. There was, however, an effect of energy density and an effect of body fat percentage. Children had shorter stop signal delays (worse) during high energy dense blocks compared to low energy density blocks. Higher body fat percentage was associated with shorter stop signal delays (worse). 
-
-
-\FloatBarrier
 \clearpage
 
 #### Portion Size Trials
@@ -603,15 +592,6 @@ kable(round(sst_ssd_bfp_PSsum$coefficients, digits = 3), "latex",  digits = 3, c
 test(emtrends(sst_ssd_bfp_PSmod, ~ bfp_center, var = 'bfp_center'))
 emmeans(sst_ssd_bfp_PSmod, specs = pairwise ~ PS)
 ```
-
-\FloatBarrier
-\
- 
-```{r sst_ssd_bfp_PSfig, echo=FALSE, includ = TRUE, fig.height = 4, fig.width = 6}
-sst_ssd_bfp_PSplot
-```
-
-There was no interaction between portion size and body fat percentage. There was, however, an effect of portion size and an effect of body fat percentage. Children had longer stop signal delays (better) during blocks where 80% of stop trials were large portion compared to small portion. Higher body fat percentage was associated with shorter stop signal delays (worse). 
 
 \FloatBarrier
 \clearpage
@@ -631,8 +611,6 @@ kable(round(nback_balacc_bfp_sum$coefficients, digits = 3), "latex",  digits = 3
 nback_balacc_bfp_plot
 ```
 
-Interaction between total body fat percentage and load shows that higher body fat percentages are associated with worse working memory at the highest load (2-back)
-
 ```{r nback_balacc_bfp_mod_posthoc, echo=FALSE}
 emmeans(nback_balacc_bfp_mod, specs = pairwise ~ block)
 test(emtrends(nback_balacc_bfp_mod, ~ block:bfp_center, var = 'bfp_center'))
@@ -649,6 +627,13 @@ test(emtrends(nback_balacc_bfp_mod, ~ block:bfp_center, var = 'bfp_center'))
 kable(round(nback_dprime_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
+\
+
+```{r nback_dprime_bfp_plot, echo=FALSE, include = TRUE, fig.height = 4, fig.width = 4}
+nback_dprime_bfp_plot
+```
+
+\FloatBarrier
 \
 ```{r nback_dprime_bfp_mod_posthoc, echo=FALSE}
 emmeans(nback_dprime_bfp_mod, specs = pairwise ~ block)

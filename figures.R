@@ -27,7 +27,7 @@
 # False Alarms
 
 gng_fa_plot <- ggplot(r01_gng_ses, aes(x=risk_status_mom, y=fa_pred)) +
-  geom_violin(trim=FALSE, fill="cornflowerblue")+
+  geom_violin(trim=FALSE, fill = 'lightgrey')+
   labs(title="Go-NoGo",
        x="Familial Risk Status",
        y = "False Alarm, % \n (Adjusted for Sex, Age, and SES)") +
@@ -50,7 +50,7 @@ sst_ssrtdesign_plot <- ggplot(r01_sst_ses, aes(x=PS, y=ssrt_pred, fill = ED)) +
 
 # SSRT - Overall
 sst_ssrt_plot <- ggplot(r01_sst_all_ses, aes(x=risk_status_mom, y=ssrt_pred)) +
-  geom_violin(trim=FALSE, fill = 'cornflowerblue')+
+  geom_violin(trim=FALSE, fill = 'lightgrey')+
   geom_boxplot(position = position_dodge(width = 0.9),  width = 0.1, outlier.shape = NA) +
   labs(title="Stop-Signal Task",
        x="Familial Risk Status",
@@ -105,7 +105,7 @@ sst_ssddesignED_plot <- ggplot(r01_sst_ses, aes(x=ED, y=ssd_pred)) +
 
 # SSD - Overall
 sst_ssd_plot <- ggplot(r01_sst_all_ses, aes(x=risk_status_mom, y=ssd_pred)) +
-  geom_violin(trim=FALSE, fill = 'cornflowerblue')+
+  geom_violin(trim=FALSE, fill = 'lightgrey')+
   geom_boxplot(width = 0.1, outlier.shape = NA) +
   labs(title="Stop-Signal Task",
        x="Familial Risk Status",
@@ -145,6 +145,20 @@ nback_balacc_plot <- ggplot(r01_nback_ses, aes(x=block, y=balacc_pred, fill = ri
                data = data.frame(x = c(1.7, 0.7, 2.7), xend = c(3.3, 3.3, 3.3), y = c(105, 110, 85),  annotation = c("***", " ***", "*")),
                aes(x = x, xend = xend, y = y, yend = y, annotation = annotation)) +
   geom_boxplot(aes(group = interaction(block, risk_status_mom)), fill = 'white', position = position_dodge(width = 0.9),  width = 0.1, outlier.shape = NA) +
+  scale_fill_manual(values = c("lightgrey", "grey35")) +
+  labs(title="N-Back Task",
+       x="Load",
+       y = "Balanced Accuracy, % \n (Adjusted for Sex, Age, and SES)") +
+  theme_pubr(base_size = 16) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank())
+
+nback_balacc_plot_color <- ggplot(r01_nback_ses, aes(x=block, y=balacc_pred, fill = risk_status_mom)) +
+  geom_violin(trim=FALSE)+
+  geom_signif(stat = "identity", inherit.aes = FALSE,
+              data = data.frame(x = c(1.7, 0.7, 2.7), xend = c(3.3, 3.3, 3.3), y = c(105, 110, 85),  annotation = c("***", " ***", "*")),
+              aes(x = x, xend = xend, y = y, yend = y, annotation = annotation)) +
+  geom_boxplot(aes(group = interaction(block, risk_status_mom)), fill = 'white', position = position_dodge(width = 0.9),  width = 0.1, outlier.shape = NA) +
   scale_fill_manual(values = c("cornflowerblue", "orange")) +
   labs(title="N-Back Task",
        x="Load",
@@ -153,9 +167,22 @@ nback_balacc_plot <- ggplot(r01_nback_ses, aes(x=block, y=balacc_pred, fill = ri
   theme(plot.title = element_text(hjust = 0.5),
         legend.title = element_blank())
 
-
 # d'
 nback_drime_plot <- ggplot(r01_nback_ses, aes(x=block, y=dprime_pred, fill = risk_status_mom)) +
+  geom_violin(trim=FALSE) +
+  geom_signif(stat = "identity", inherit.aes = FALSE,
+              data = data.frame(x = c(1.7, 0.7, 2.7), xend = c(3.3, 3.3, 3.3), y = c(4.25, 4.5, 3),  annotation = c("***", " ***", "*")),
+              aes(x = x, xend = xend, y = y, yend = y, annotation = annotation)) +
+  geom_boxplot(aes(group = interaction(block, risk_status_mom)), fill = 'white', position = position_dodge(width = 0.9),  width = 0.1, outlier.shape = NA) +
+  scale_fill_manual(values = c("lightgrey", "grey35")) +
+  labs(title="N-Back Task",
+       x="Load",
+       y = "d' \n (Adjusted for Sex, Age, and SES)") +
+  theme_pubr(base_size = 16) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank())
+
+nback_drime_plot_color <- ggplot(r01_nback_ses, aes(x=block, y=dprime_pred, fill = risk_status_mom)) +
   geom_violin(trim=FALSE) +
   geom_signif(stat = "identity", inherit.aes = FALSE,
               data = data.frame(x = c(1.7, 0.7, 2.7), xend = c(3.3, 3.3, 3.3), y = c(4.25, 4.5, 3),  annotation = c("***", " ***", "*")),
@@ -169,36 +196,38 @@ nback_drime_plot <- ggplot(r01_nback_ses, aes(x=block, y=dprime_pred, fill = ris
   theme(plot.title = element_text(hjust = 0.5),
         legend.title = element_blank())
 
+## GNG - exploratory analyses ####
+
+# False Alarms
+gng_fa_bfp_plot <- ggplot(r01_gng_ses, aes(x=dxa_total_body_perc_fat, y=fa_bfp_pred)) +
+  geom_smooth(method = 'lm', color = 'black')+
+  geom_point() +
+  labs(title="Go/No-Go",
+       x="Total Body Fat Percentage",
+       y = "Percent False Alarms \n (Adjusted for Sex, Age, and SES)") +
+  theme_pubr(base_size = 16) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank())
+
 
 ## SST - exploratory analyses ####
 
+# SSRT
+sst_ssrt_bfp_plot <- ggplot(r01_sst_all_ses, aes(x=dxa_total_body_perc_fat, y=ssrt_bfp_pred)) +
+  geom_smooth(method = 'lm', color = 'black')+
+  geom_point() +
+  labs(title="Stop Signal Task",
+       x="Total Body Fat Percentage",
+       y = "Stop Signal Reaction Time, ms \n (Adjusted for Sex, Age, and SES)") +
+  theme_pubr(base_size = 16) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank())
+
 # SSD - Overall
-sst_ssd_bfp_plot <- ggplot(r01_sst_bfp_ses, aes(x=dxa_total_body_perc_fat, y=ssd_pred)) +
-  geom_smooth(method = 'lm')+
-  scale_color_manual(values = c("cornflowerblue", "orange", "purple")) +
-  labs(title="Stop-Signal Task",
-       x="Total Body Fat Percentage",
-       y = "Stop Signal Delay, ms \n (Adjusted for Sex, Age, and SES)") +
-  theme_pubr(base_size = 16) +
-  theme(plot.title = element_text(hjust = 0.5),
-        legend.title = element_blank())
-
-# SSD - ED
-sst_ssd_bfp_EDplot <- ggplot(r01_sst_bfp_ED_ses, aes(x=dxa_total_body_perc_fat, y=ssd_pred, color = ED)) +
-  geom_smooth(method = 'lm')+
-  scale_color_manual(values = c("cornflowerblue", "orange", "purple")) +
-  labs(title="Stop-Signal Task - Energy Density",
-       x="Total Body Fat Percentage",
-       y = "Stop Signal Delay, ms \n (Adjusted for Sex, Age, and SES)") +
-  theme_pubr(base_size = 16) +
-  theme(plot.title = element_text(hjust = 0.5),
-        legend.title = element_blank())
-
-# SSD - PS
-sst_ssd_bfp_PSplot <- ggplot(r01_sst_bfp_PS_ses, aes(x=dxa_total_body_perc_fat, y=ssd_pred, color = PS)) +
-  geom_smooth(method = 'lm')+
-  scale_color_manual(values = c("cornflowerblue", "orange", "purple")) +
-  labs(title="Stop-Signal Task - Portion Size",
+sst_ssd_bfp_plot <- ggplot(r01_sst_all_ses, aes(x=dxa_total_body_perc_fat, y=ssd_bfp_pred)) +
+  geom_smooth(method = 'lm', color = 'black')+
+  geom_point() +
+  labs(title="Stop Signal Task",
        x="Total Body Fat Percentage",
        y = "Stop Signal Delay, ms \n (Adjusted for Sex, Age, and SES)") +
   theme_pubr(base_size = 16) +
@@ -208,7 +237,19 @@ sst_ssd_bfp_PSplot <- ggplot(r01_sst_bfp_PS_ses, aes(x=dxa_total_body_perc_fat, 
 ## N-Back - exploratory analyses ####
 
 # Balanced Accuracy
-nback_balacc_bfp_plot <- ggplot(r01_nback_bfp_ses, aes(x=dxa_total_body_perc_fat, y=balacc_pred, color = block)) +
+nback_balacc_bfp_plot <- ggplot(r01_nback_ses, aes(x=dxa_total_body_perc_fat, y=balacc_bfp_pred, linetype = block, shape = block)) +
+  geom_smooth(method = 'lm', color = 'black')+
+  geom_point()+
+  scale_linetype_manual(values = c("solid", "dotted", "dashed")) +
+  scale_shape_manual(values = c(1, 2, 0)) +
+  labs(title="N-Back Task",
+       x="Total Body Fat Percentage",
+       y = "Balanced Accuracy, % \n (Adjusted for Sex, Age, and SES)") +
+  theme_pubr(base_size = 16) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank())
+
+nback_balacc_bfp_plot_color <- ggplot(r01_nback_ses, aes(x=dxa_total_body_perc_fat, y=balacc_bfp_pred, color = block)) +
   geom_smooth(method = 'lm')+
   scale_color_manual(values = c("cornflowerblue", "orange", "purple")) +
   labs(title="N-Back Task",
@@ -218,3 +259,15 @@ nback_balacc_bfp_plot <- ggplot(r01_nback_bfp_ses, aes(x=dxa_total_body_perc_fat
   theme(plot.title = element_text(hjust = 0.5),
         legend.title = element_blank())
 
+# d'
+nback_dprime_bfp_plot <- ggplot(r01_nback_ses, aes(x=dxa_total_body_perc_fat, y=dprime_bfp_pred, linetype = block, shape = block)) +
+  geom_smooth(method = 'lm', color = 'black')+
+  geom_point()+
+  scale_linetype_manual(values = c("solid", "dotted", "dashed")) +
+  scale_shape_manual(values = c(1, 2, 0)) +
+  labs(title="N-Back Task",
+       x="Total Body Fat Percentage",
+       y = "d' \n (Adjusted for Sex, Age, and SES)") +
+  theme_pubr(base_size = 16) +
+  theme(plot.title = element_text(hjust = 0.5),
+        legend.title = element_blank())
