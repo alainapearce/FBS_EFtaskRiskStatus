@@ -449,7 +449,7 @@ kable(round(gng_fa_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, capt
 
 \
 
-```{r gng_fa_bfp_plot, echo=FALSE, include = TRUE, fig.height = 4, fig.width = 4}
+```{r gng_fa_bfp_plot, echo=FALSE, include = TRUE, fig.height = 4, fig.width = 6}
 gng_fa_bfp_plot
 ```
 
@@ -503,7 +503,7 @@ kable(round(sst_ssrt_bfp_sum$coefficients, digits = 3), "latex",  digits = 3, ca
 ```
 \
 
-```{r sst_ssrt_bfp_plot, echo=FALSE, include = TRUE, fig.height = 4, fig.width = 4}
+```{r sst_ssrt_bfp_plot, echo=FALSE, include = TRUE, fig.height = 4, fig.width = 6}
 sst_ssrt_bfp_plot
 ```
 
@@ -629,7 +629,7 @@ kable(round(nback_dprime_bfp_sum$coefficients, digits = 3), "latex",  digits = 3
 ```
 \
 
-```{r nback_dprime_bfp_plot, echo=FALSE, include = TRUE, fig.height = 4, fig.width = 4}
+```{r nback_dprime_bfp_plot, echo=FALSE, include = TRUE, fig.height = 4, fig.width = 6}
 nback_dprime_bfp_plot
 ```
 

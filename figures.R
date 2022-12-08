@@ -55,6 +55,7 @@ sst_ssrt_plot <- ggplot(r01_sst_all_ses, aes(x=risk_status_mom, y=ssrt_pred)) +
   labs(title="Stop-Signal Task",
        x="Familial Risk Status",
        y = "Stop-Signal Reaction Time, ms \n (Adjusted for Sex, Age, and SES)") +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 4)) +
   theme_pubr(base_size = 16) +
   theme(plot.title = element_text(hjust = 0.5),
         legend.title = element_blank())
@@ -219,6 +220,7 @@ sst_ssrt_bfp_plot <- ggplot(r01_sst_all_ses, aes(x=dxa_total_body_perc_fat, y=ss
   labs(title="Stop Signal Task",
        x="Total Body Fat Percentage",
        y = "Stop Signal Reaction Time, ms \n (Adjusted for Sex, Age, and SES)") +
+  scale_y_continuous(breaks = scales::pretty_breaks(n = 4)) +
   theme_pubr(base_size = 16) +
   theme(plot.title = element_text(hjust = 0.5),
         legend.title = element_blank())
