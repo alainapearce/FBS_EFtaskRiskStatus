@@ -91,6 +91,12 @@ bmi_t
 pbf_t
 ```
 
+## WSI
+```{r demo+wasi, echo=FALSE}
+wasi_t
+wasi_cor
+```
+
 
 # Effect of Risk Status
 

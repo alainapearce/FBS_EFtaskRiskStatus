@@ -42,6 +42,12 @@ bmi_t <- t.test(bmi_percentile ~ risk_status_mom, data = covar_demo)
 ## bmi percentile
 pbf_t <- t.test(dxa_total_body_perc_fat ~ risk_status_mom, data = covar_demo)
 
+## WASI
+wasi_t <- t.test(wasi_fsiq2 ~ risk_status_mom, data = covar_demo)
+
+## WASI
+wasi_cor <- cor.test(covar_demo$dxa_total_body_perc_fat, covar_demo$wasi_fsiq2)
+
 ## Go-NoGo  - Risk ####
 # False Alarms
 gng_fa_model <- lm(all_p_nogo_fa ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_gng)
