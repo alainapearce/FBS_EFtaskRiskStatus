@@ -44,6 +44,7 @@ library(emmeans)
 
 library(lme4)
 library(lmerTest)
+library(rwa)
 library(ggplot2)
 library(ggpubr)
 library(ggsignif)
@@ -662,6 +663,14 @@ kable(round(gng_fa_bfp_risk_sum$coefficients, digits = 3), "latex",  digits = 3,
 ```
 
 \FloatBarrier
+
+```{r gng_fa_rwa_mod, echo=FALSE, results='asis'}
+kable(gng_fa_rwa$result, "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms - Relative Weighting Analysis', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+
+\FloatBarrier
 \clearpage
 
 ## Stop-Signal Task
@@ -675,6 +684,13 @@ kable(round(gng_fa_bfp_risk_sum$coefficients, digits = 3), "latex",  digits = 3,
 
 ```{r sst_ssrt_bfp_risk_mod, echo=FALSE, results='asis'}
 kable(round(sst_ssrt_bfp_risk_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Body Fat Percentage + Risk Status', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+```{r sst_ssrt_rwa_mod, echo=FALSE, results='asis'}
+kable(sst_ssrt_rwa$result, "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Relative Weighting Analysis', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -715,6 +731,13 @@ kable(round(sst_ssd_bfp_risk_sum$coefficients, digits = 3), "latex",  digits = 3
 ```
 
 \FloatBarrier
+
+```{r sst_ssd_rwa_mod, echo=FALSE, results='asis'}
+kable(sst_ssd_rwa$result, "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Relative Weighting Analysis', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
 \clearpage
 
 #### Energy Density Trials
@@ -750,7 +773,7 @@ kable(round(sst_ssd_bfp_risk_PSsum$coefficients, digits = 3), "latex",  digits =
 kable(round(nback_balacc_bfp_risk_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load + Risk Status x Load', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
-\
+\FloatBarrier
 
 ```{r nback_balacc_bfp_risk_mod_posthoc, echo=FALSE}
 emmeans(nback_balacc_bfp_risk_mod, specs = pairwise ~ risk_status_mom, adjust = 'none')
@@ -759,19 +782,32 @@ test(emtrends(nback_balacc_bfp_risk_mod, ~ bfp_center, var = 'bfp_center'))
 ```
 \FloatBarrier
 
+```{r nback_balacc_rwa_mod, echo=FALSE, results='asis'}
+kable(nback_balacc_rwa$result, "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Relative Weighting Analysis', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+\FloatBarrier
+
 ### d'
 
 \FloatBarrier
 
 ```{r nback_dprime_bfp_risk_mod, echo=FALSE, results='asis'}
-kable(round(nback_dprime_bfp_risk_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load + Risk Status x Load', booktabs=TRUE) %>%
+kable(round(nback_dprime_bfp_risk_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback dprime - Body Fat Percentage x Load + Risk Status x Load', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
-\
+\FloatBarrier
 ```{r nback_dprime_bfp_risk_mod_posthoc, echo=FALSE}
 emmeans(nback_dprime_bfp_risk_mod, specs = pairwise ~ risk_status_mom, adjust = 'none')
 emmeans(nback_dprime_bfp_risk_mod, specs = pairwise ~ block:risk_status_mom, adjust = 'none')
 test(emtrends(nback_dprime_bfp_risk_mod, ~ bfp_center, var = 'bfp_center'))
 ```
+\FloatBarrier
+
+```{r nback_dprime_rwa_mod, echo=FALSE, results='asis'}
+kable(nback_dprime_rwa$result, "latex",  digits = 3, caption = 'Nback dprime - Relative Weighting Analysis', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
 \FloatBarrier
 \clearpage

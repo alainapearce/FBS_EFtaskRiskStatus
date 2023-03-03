@@ -220,7 +220,7 @@ nback_dprime_bfp_sum <- summary(nback_dprime_bfp_mod)
 r01_nback_ses$dprime_bfp_pred <- predict(nback_dprime_bfp_mod, type = 'response')
 
 
-# Exploratory - relative impact of risk and BFP ####
+# Exploratory - relative impact of risk and BFP - multiple regression ####
 
 ## Go-NoGo- BFP + Risk ####
 # False Alarms
@@ -276,3 +276,44 @@ nback_dprime_bfp_risk_mod <- lmer(dprime ~ mom_ed + income + sex + age_yr + bloc
 nback_dprime_bfp_risk_sum <- summary(nback_dprime_bfp_risk_mod)
 
 r01_nback_ses$dprime_pred_both <- predict(nback_dprime_bfp_risk_mod, type = 'response')
+
+# Exploratory - relative weight analysis ####
+
+## Go-NoGo- rwa ####
+r01_gng$sex_num <- ifelse(r01_gng$sex == 'Male', 0, 1)
+r01_gng$mom_ed_num <- ifelse(r01_gng$mom_ed == 'High School/GED', 0, ifelse(r01_gng$mom_ed == 'AA/Technical Degree', 1, ifelse(r01_gng$mom_ed == 'Bachelor Degree', 2, ifelse(r01_gng$mom_ed == '> Bachelor Degree', 3, NA))))
+r01_gng$income_num <- ifelse(r01_gng$income == '< $51,000', 0, ifelse(r01_gng$income == '$51,000 - $100,000', 1, ifelse(r01_gng$income == '>$100,000', 2, NA)))
+r01_gng$risk_status_mom_num <- ifelse(r01_gng$risk_status_mom == 'Low Risk', 0, 1)
+
+# False Alarms
+gng_fa_rwa <- rwa(r01_gng, 'all_p_nogo_fa', c('mom_ed_num', 'income_num', 'sex_num', 'age_yr', 'risk_status_mom_num', 'dxa_total_body_perc_fat'), applysigns = FALSE, plot = TRUE)
+
+## Stop-Signal Task  - RWA ####
+r01_sst_cond$sex_num <- ifelse(r01_sst_cond$sex == 'Male', 0, 1)
+r01_sst_cond$mom_ed_num <- ifelse(r01_sst_cond$mom_ed == 'High School/GED', 0, ifelse(r01_sst_cond$mom_ed == 'AA/Technical Degree', 1, ifelse(r01_sst_cond$mom_ed == 'Bachelor Degree', 2, ifelse(r01_sst_cond$mom_ed == '> Bachelor Degree', 3, NA))))
+r01_sst_cond$income_num <- ifelse(r01_sst_cond$income == '< $51,000', 0, ifelse(r01_sst_cond$income == '$51,000 - $100,000', 1, ifelse(r01_sst_cond$income == '>$100,000', 2, NA)))
+r01_sst_cond$risk_status_mom_num <- ifelse(r01_sst_cond$risk_status_mom == 'Low Risk', 0, 1)
+
+# SSRT - all
+sst_ssrt_rwa <- rwa(r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ], 'all_ssrt_int', c('mom_ed_num', 'income_num', 'sex_num', 'age_yr', 'risk_status_mom_num', 'dxa_total_body_perc_fat'), applysigns = FALSE, plot = TRUE)
+
+# SSD - all
+sst_ssd_rwa <- rwa(r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ], 'all_ssd', c('mom_ed_num', 'income_num', 'sex_num', 'age_yr', 'risk_status_mom_num', 'dxa_total_body_perc_fat'), applysigns = FALSE, plot = TRUE)
+
+## N-Back RWA ####
+r01_nback$sex_num <- ifelse(r01_nback$sex == 'Male', 0, 1)
+r01_nback$mom_ed_num <- ifelse(r01_nback$mom_ed == 'High School/GED', 0, ifelse(r01_nback$mom_ed == 'AA/Technical Degree', 1, ifelse(r01_nback$mom_ed == 'Bachelor Degree', 2, ifelse(r01_nback$mom_ed == '> Bachelor Degree', 3, NA))))
+r01_nback$income_num <- ifelse(r01_nback$income == '< $51,000', 0, ifelse(r01_nback$income == '$51,000 - $100,000', 1, ifelse(r01_nback$income == '>$100,000', 2, NA)))
+r01_nback$risk_status_mom_num <- ifelse(r01_nback$risk_status_mom == 'Low Risk', 0, 1)
+r01_nback$block_num <- ifelse(r01_nback$block == '0-Back', 0, ifelse(r01_nback$block == '1-Back', 1, 2))
+
+r01_nback$blockrisk_status_mom <- r01_nback$risk_status_mom_num*r01_nback$block_num
+r01_nback$blockbfp_center <- r01_nback$bfp_center*r01_nback$block_num
+
+# balanced accuracy
+nback_balacc_rwa <- rwa(r01_nback[r01_nback$ses == 1, ], 'p_target_ba', c('mom_ed_num', 'income_num', 'sex_num', 'age_yr', 'block_num', 'risk_status_mom_num', 'bfp_center', 'blockrisk_status_mom', 'blockbfp_center'), applysigns = FALSE, plot = TRUE)
+
+# d'
+nback_dprime_rwa <- rwa(r01_nback[r01_nback$ses == 1, ], 'dprime', c('mom_ed_num', 'income_num', 'sex_num', 'age_yr', 'block_num', 'risk_status_mom_num', 'bfp_center', 'blockrisk_status_mom', 'blockbfp_center'), applysigns = FALSE, plot = TRUE)
+
+
