@@ -316,4 +316,41 @@ nback_balacc_rwa <- rwa(r01_nback[r01_nback$ses == 1, ], 'p_target_ba', c('mom_e
 # d'
 nback_dprime_rwa <- rwa(r01_nback[r01_nback$ses == 1, ], 'dprime', c('mom_ed_num', 'income_num', 'sex_num', 'age_yr', 'block_num', 'risk_status_mom_num', 'bfp_center', 'blockrisk_status_mom', 'blockbfp_center'), applysigns = FALSE, plot = TRUE)
 
+## Exploratory Analyses with bmi_z - Reviewer Resposne ####
 
+## Go-NoGo- BFP ####
+# False Alarms
+gng_fa_bmiz_mod <- lm(all_p_nogo_fa ~ mom_ed + income + sex + age_yr + bmi_z, data = r01_gng)
+gng_fa_bmiz_sum <- summary(gng_fa_bmiz_mod)
+
+# hits
+gng_hits_bmiz_mod <- lm(all_p_go_hit ~ mom_ed + income + sex + age_yr + bmi_z, data = r01_gng)
+gng_hits_bmiz_sum <- summary(gng_hits_bmiz_mod)
+
+# reaction time
+gng_rt_bmiz_mod <- lm(all_rt_mean_go_hit ~ mom_ed + income + sex + age_yr + bmi_z, data = r01_gng)
+gng_rt_bmiz_sum <- summary(gng_rt_bmiz_mod)
+
+# d'prime
+gng_dprime_bmiz_mod <- lm(all_d_prime_ll ~ mom_ed + income + sex + age_yr + bmi_z, data = r01_gng)
+gng_dprime_bmiz_sum <- summary(gng_dprime_bmiz_mod)
+
+## Stop-Signal Task  - BFP ####
+
+# SSRT - all
+sst_ssrt_bmiz_mod <- lm(all_ssrt_int ~ mom_ed + income + sex + age_yr + bmi_z, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
+sst_ssrt_bmiz_sum <- summary(sst_ssrt_bmiz_mod)
+
+# SSD - all
+sst_ssd_bmiz_mod <- lm(all_ssd ~ mom_ed + income + sex + age_yr + bmi_z, data = r01_sst_cond[r01_sst_cond$all_racehorse_check == 1, ])
+sst_ssd_bmiz_sum <- summary(sst_ssd_bmiz_mod)
+
+## N-Back BFP ####
+
+# balanced accuracy
+nback_balacc_bmiz_mod <- lmer(p_target_ba ~ mom_ed + income + sex + age_yr + block*bmi_z + (1|sub), data = r01_nback[r01_nback$ses == 1, ])
+nback_balacc_bmiz_sum <- summary(nback_balacc_bmiz_mod)
+
+# d'
+nback_dprime_bmiz_mod <- lmer(dprime ~ mom_ed + income + sex + age_yr + block*bmi_z + (1|sub), data = r01_nback[r01_nback$ses == 1, ])
+nback_dprime_bmiz_sum <- summary(nback_dprime_bmiz_mod)

@@ -811,3 +811,109 @@ kable(nback_dprime_rwa$result, "latex",  digits = 3, caption = 'Nback dprime - R
 
 \FloatBarrier
 \clearpage
+
+# Exploratory Analyses: BMI-Z score (reviewer comment)
+
+## Go-NoGo
+
+### Percent False Alarms
+
+\FloatBarrier
+
+```{r gng_fa_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(gng_fa_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms - Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+### Percent Hits
+
+```{r gng_hits_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(gng_hits_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits - Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+
+\FloatBarrier
+
+### Go Reaction Time
+
+```{r gng_hits_rt_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(gng_rt_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo - Go Reaction Time', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+
+\FloatBarrier
+
+### d'
+
+```{r gng_dprime_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(gng_dprime_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = "Go-NoGo - d'", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+
+\FloatBarrier
+\clearpage
+
+## Stop-Signal Task
+
+### Stop Signal Reaction Time
+
+
+#### Overall
+
+\FloatBarrier
+
+```{r sst_ssrt_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(sst_ssrt_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+\
+
+\FloatBarrier
+
+### Stop Signal Delay
+
+#### Overall
+
+\FloatBarrier
+
+```{r sst_ssd_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(sst_ssd_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\
+
+\FloatBarrier
+\clearpage
+
+## N-back
+
+### Ballanced Accuracy
+
+\FloatBarrier
+
+```{r nback_balacc_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(nback_balacc_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+\clearpage
+
+### d'
+
+\FloatBarrier
+
+```{r nback_dprime_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(nback_dprime_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+\clearpage
