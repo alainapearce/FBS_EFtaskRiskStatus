@@ -812,7 +812,7 @@ kable(nback_dprime_rwa$result, "latex",  digits = 3, caption = 'Nback dprime - R
 \FloatBarrier
 \clearpage
 
-# Exploratory Analyses: BMI-Z score (reviewer comment)
+# Exploratory Analyses: remove BMI percentile >= 85 (reviewer comment)
 
 ## Go-NoGo
 
@@ -820,8 +820,8 @@ kable(nback_dprime_rwa$result, "latex",  digits = 3, caption = 'Nback dprime - R
 
 \FloatBarrier
 
-```{r gng_fa_bmiz_mod, echo=FALSE, results='asis'}
-kable(round(gng_fa_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms - Body Fat Percentage', booktabs=TRUE) %>%
+```{r gng_fa_risk_p85_mod, echo=FALSE, results='asis'}
+kable(round(gng_fa_risk_p85_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms - Body Fat Percentage', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -829,8 +829,8 @@ kable(round(gng_fa_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, cap
 
 ### Percent Hits
 
-```{r gng_hits_bmiz_mod, echo=FALSE, results='asis'}
-kable(round(gng_hits_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits - Body Fat Percentage', booktabs=TRUE) %>%
+```{r gng_hits_risk_p85_mod, echo=FALSE, results='asis'}
+kable(round(gng_hits_risk_p85_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits - Body Fat Percentage', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -839,8 +839,8 @@ kable(round(gng_hits_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, c
 
 ### Go Reaction Time
 
-```{r gng_hits_rt_bmiz_mod, echo=FALSE, results='asis'}
-kable(round(gng_rt_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo - Go Reaction Time', booktabs=TRUE) %>%
+```{r gng_hits_rt_risk_p85_mod, echo=FALSE, results='asis'}
+kable(round(gng_rt_risk_p85_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo - Go Reaction Time', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -849,8 +849,8 @@ kable(round(gng_rt_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, cap
 
 ### d'
 
-```{r gng_dprime_bmiz_mod, echo=FALSE, results='asis'}
-kable(round(gng_dprime_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = "Go-NoGo - d'", booktabs=TRUE) %>%
+```{r gng_dprime_risk_p85_mod, echo=FALSE, results='asis'}
+kable(round(gng_dprime_risk_p85_sum$coefficients, digits = 3), "latex",  digits = 3, caption = "Go-NoGo - d'", booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -867,8 +867,8 @@ kable(round(gng_dprime_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3,
 
 \FloatBarrier
 
-```{r sst_ssrt_bmiz_mod, echo=FALSE, results='asis'}
-kable(round(sst_ssrt_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Body Fat Percentage', booktabs=TRUE) %>%
+```{r sst_ssrt_risk_p85_mod, echo=FALSE, results='asis'}
+kable(round(sst_ssrt_risk_p85_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Body Fat Percentage', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 \
@@ -881,8 +881,8 @@ kable(round(sst_ssrt_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, c
 
 \FloatBarrier
 
-```{r sst_ssd_bmiz_mod, echo=FALSE, results='asis'}
-kable(round(sst_ssd_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage', booktabs=TRUE) %>%
+```{r sst_ssd_risk_p85_mod, echo=FALSE, results='asis'}
+kable(round(sst_ssd_risk_p85_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -897,8 +897,8 @@ kable(round(sst_ssd_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, ca
 
 \FloatBarrier
 
-```{r nback_balacc_bmiz_mod, echo=FALSE, results='asis'}
-kable(round(nback_balacc_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
+```{r nback_balacc_risk_p85_mod, echo=FALSE, results='asis'}
+kable(round(nback_balacc_risk_p85_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
@@ -909,8 +909,114 @@ kable(round(nback_balacc_bmiz_sum$coefficients, digits = 3), "latex",  digits = 
 
 \FloatBarrier
 
-```{r nback_dprime_bmiz_mod, echo=FALSE, results='asis'}
-kable(round(nback_dprime_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
+```{r nback_dprime_risk_p85_mod, echo=FALSE, results='asis'}
+kable(round(nback_dprime_risk_p85_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+\clearpage
+
+# Exploratory Analyses: adjust for BMI-Z score (reviewer comment)
+
+## Go-NoGo
+
+### Percent False Alarms
+
+\FloatBarrier
+
+```{r gng_fa_risk_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(gng_fa_risk_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo Percent False Alarms - Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+
+### Percent Hits
+
+```{r gng_hits_risk_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(gng_hits_risk_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo - Percent Hits - Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+
+\FloatBarrier
+
+### Go Reaction Time
+
+```{r gng_hits_rt_risk_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(gng_rt_risk_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Go-NoGo - Go Reaction Time', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+
+\FloatBarrier
+
+### d'
+
+```{r gng_dprime_risk_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(gng_dprime_risk_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = "Go-NoGo - d'", booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+
+\FloatBarrier
+\clearpage
+
+## Stop-Signal Task
+
+### Stop Signal Reaction Time
+
+
+#### Overall
+
+\FloatBarrier
+
+```{r sst_ssrt_risk_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(sst_ssrt_risk_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSRT - Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+\
+
+\FloatBarrier
+
+### Stop Signal Delay
+
+#### Overall
+
+\FloatBarrier
+
+```{r sst_ssd_risk_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(sst_ssd_risk_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Stop-Signal Task SSD - Body Fat Percentage', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\
+
+\FloatBarrier
+\clearpage
+
+## N-back
+
+### Ballanced Accuracy
+
+\FloatBarrier
+
+```{r nback_balacc_risk_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(nback_balacc_risk_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "repeat_header"))
+```
+
+\FloatBarrier
+\clearpage
+
+### d'
+
+\FloatBarrier
+
+```{r nback_dprime_risk_bmiz_mod, echo=FALSE, results='asis'}
+kable(round(nback_dprime_risk_bmiz_sum$coefficients, digits = 3), "latex",  digits = 3, caption = 'Nback Balanced Accuracy - Body Fat Percentage x Load', booktabs=TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "repeat_header"))
 ```
 
