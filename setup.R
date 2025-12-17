@@ -163,6 +163,12 @@ covariates_dat$race <- droplevels(factor(covariates_dat$race))
 covariates_dat$mom_ed <- droplevels(factor(covariates_dat$mom_ed))
 covariates_dat$dad_ed <- droplevels(factor(covariates_dat$dad_ed))
 
+# reduce covariates
+covariates_dat = covariates_dat[!grepl('v1_date|age_mo', names(covariates_dat))]
+covariates_dat$age_yr = round(covariates_dat$age_yr, 1)
+
+write.csv(covariates_dat, 'data/covariates_dat.csv', row.names = FALSE)
+
 #### Go No-Go ####
 
 ## 1) Load Data ####
@@ -187,6 +193,8 @@ r01_gng <- merge(covariates_dat, r01_gng[1:31], by = 'sub', all.x = FALSE, all.y
 #remove risk status Neither
 r01_gng <- r01_gng[r01_gng$risk_status_mom != 'Neither', ]
 r01_gng$risk_status_mom <- droplevels(r01_gng$risk_status_mom)
+
+write.csv(r01_gng, 'data/gng_data.csv', row.names = FALSE)
 
 #### N-Back ####
 
@@ -214,6 +222,9 @@ dprime_mat <- dprime(n_hit = r01_nback$n_target_hit,
                         n_cr = r01_nback$n_fill_corr)
 
 r01_nback$dprime <- dprime_mat$dprime
+
+write.csv(r01_nback, 'data/nback_data.csv', row.names = FALSE)
+
 
 #### SST ####
 
@@ -318,3 +329,7 @@ r01_sst_PSlong$risk_status_mom <- droplevels(r01_sst_PSlong$risk_status_mom)
 r01_sst_cond <- r01_sst_cond[r01_sst_cond$risk_status_mom != 'Neither', ]
 r01_sst_cond$risk_status_mom <- droplevels(r01_sst_cond$risk_status_mom)
 
+write.csv(r01_sst_cond, 'data/sst_cond.csv', row.names = FALSE)
+write.csv(r01_sst_long, 'data/sst_long.csv', row.names = FALSE)
+write.csv(r01_sst_EDlong, 'data/sst_EDlong.csv', row.names = FALSE)
+write.csv(r01_sst_PSlong, 'data/sst_PSlong.csv', row.names = FALSE)

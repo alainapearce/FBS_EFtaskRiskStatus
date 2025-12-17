@@ -26,9 +26,12 @@
 # source('setup.R')
 # source('functions.R')
 
+# load covariates
+covariates_dat <- read.csv('data/covariates_dat.csv')
+
 ## Demo ###
 covar_demo <- covariates_dat[covariates_dat$risk_status_mom != 'Neither', ]
-covar_demo$risk_status_mom <- droplevels(covar_demo$risk_status_mom)
+covar_demo$risk_status_mom <- droplevels(factor(covar_demo$risk_status_mom))
 
 ## income
 income_chi <- chisq.test(xtabs(~risk_status_mom + income, data = covar_demo))
@@ -49,6 +52,8 @@ wasi_t <- t.test(wasi_fsiq2 ~ risk_status_mom, data = covar_demo)
 wasi_cor <- cor.test(covar_demo$dxa_total_body_perc_fat, covar_demo$wasi_fsiq2)
 
 ## Go-NoGo  - Risk ####
+r01_gng <- read.csv('data/gng_data.csv')
+
 # False Alarms
 gng_fa_model <- lm(all_p_nogo_fa ~ mom_ed + income + sex + age_yr + risk_status_mom, data = r01_gng)
 gng_fa_sum <- summary(gng_fa_model)
@@ -69,6 +74,10 @@ gng_dprime_model <- lm(all_d_prime_ll ~ mom_ed + income + sex + age_yr + risk_st
 gng_dprime_sum <- summary(gng_dprime_model)
 
 ## Stop-Signal Task  - Risk ####
+r01_sst_long <- read.csv('data/sst_long.csv')
+r01_sst_cond <- read.csv('data/sst_cond.csv')
+r01_sst_EDlong <- read.csv('data/sst_EDlong.csv')
+r01_sst_PSlong <- read.csv('data/sst_PSlong.csv')
 
 # SSRT - task design
 sstdesign_ssrt_model <- lmer(ssrt_int ~ mom_ed + income + sex + age_yr + PS*ED + (1|sub), data = r01_sst_long[r01_sst_long$ncond_racehorse_good == 4, ])
@@ -124,6 +133,7 @@ r01_sst_PS_ses$ssd_pred <- predict(sst_ssd_PSmodel, type = 'response')
 
 
 ## N-Back - risk ####
+r01_nback <- read.csv('data/nback_data.csv')
 
 # balanced accuracy
 nback_balacc_mod <- lmer(p_target_ba ~ mom_ed + income + sex + age_yr + block*risk_status_mom + (1|sub), data = r01_nback[r01_nback$ses == 1, ])
